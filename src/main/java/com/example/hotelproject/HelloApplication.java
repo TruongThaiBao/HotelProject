@@ -15,8 +15,9 @@ public class HelloApplication extends Application {
         stage.setTitle("");
         stage.setScene(scene);
 //        stage.setFullScreen(true);
+//        scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         stage.show();
-//        Conect.getInstance();
+        Conect.getInstance();
     }
 
     public static void main(String[] args) {

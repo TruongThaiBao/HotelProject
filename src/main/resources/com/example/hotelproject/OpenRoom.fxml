@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="339.0" prefWidth="534.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.OpenRoomController">
+         <children>
+            <Label layoutX="159.0" layoutY="21.0" prefHeight="31.0" prefWidth="248.0" text="NHẬN PHÒNG KHÁCH SẠN">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="roomNumber" alignment="CENTER" contentDisplay="CENTER" layoutX="215.0" layoutY="52.0" prefHeight="31.0" prefWidth="105.0" text="SỐ PHÒNG" textAlignment="CENTER">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label layoutX="38.0" layoutY="119.0" prefHeight="18.0" prefWidth="90.0" text="Giờ Checkin :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="39.0" layoutY="150.0" prefHeight="18.0" prefWidth="118.0" text="Tên khách hàng :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="39.0" layoutY="191.0" prefHeight="18.0" prefWidth="118.0" text="CMND / Hộ chiếu :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fcustomerName" layoutX="130.0" layoutY="146.0" prefHeight="27.0" prefWidth="365.0" />
+            <TextField fx:id="fnumberID" layoutX="129.0" layoutY="187.0" prefHeight="26.0" prefWidth="126.0" />
+            <Label layoutX="261.0" layoutY="191.0" prefHeight="18.0" prefWidth="90.0" text="Số điện thoại :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="39.0" layoutY="231.0" prefHeight="18.0" prefWidth="106.0" text="Số lượng người :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <TextField fx:id="fphoneNumber" layoutX="354.0" layoutY="187.0" prefHeight="26.0" prefWidth="142.0" />
+            <TextField fx:id="fnop" layoutX="130.0" layoutY="227.0" prefHeight="26.0" prefWidth="365.0" />
+            <Button layoutX="147.0" layoutY="265.0" mnemonicParsing="false" onAction="#handleOKButtonAction" prefHeight="42.0" prefWidth="90.0" text="OK" />
+            <Button layoutX="309.0" layoutY="265.0" mnemonicParsing="false" onAction="#onCancelButtonClick" prefHeight="42.0" prefWidth="90.0" text="Cancel" />
+            <Label layoutX="38.0" layoutY="91.0" prefHeight="18.0" prefWidth="90.0" text="Giá phòng :">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label fx:id="roomPrice" layoutX="104.0" layoutY="91.0" prefHeight="18.0" prefWidth="84.0" text="roomPrice" />
+      <Label fx:id="timeField" contentDisplay="RIGHT" layoutX="108.0" layoutY="120.0" prefHeight="17.0" prefWidth="215.0" text="Time" />
+      <Label layoutX="261.0" layoutY="91.0" prefHeight="18.0" prefWidth="63.0" text="Mã Booking :">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <TextField fx:id="fbookingID" layoutX="334.0" layoutY="87.0" />
+      <Label layoutX="261.0" layoutY="119.0" prefHeight="18.0" prefWidth="84.0" text="Khách vãng lai :">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="fKhachVangLai" layoutX="333.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleChooseRadioButton" />
+         </children>
+      </AnchorPane>

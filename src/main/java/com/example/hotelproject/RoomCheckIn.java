@@ -1,21 +1,51 @@
 package com.example.hotelproject;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class RoomCheckIn {
     private int checkInID;
+    private int customerID;
     private int bookingID;
-    private LocalDateTime checkInTime;
+    private Timestamp checkInTime;
+    private int nop;
     private boolean isDeleted;
 
-    public RoomCheckIn(int checkInID, int bookingID, LocalDateTime checkInTime, boolean isDeleted) {
+    public RoomCheckIn( int bookingID, int nop) {
         this.checkInID = checkInID;
+        this.customerID = customerID;
         this.bookingID = bookingID;
         this.checkInTime = checkInTime;
-        this.isDeleted = isDeleted;
+        this.isDeleted = false;
+        this.nop =nop;
+    }
+
+    public RoomCheckIn(int nop) {
+        this.checkInID = checkInID;
+        this.customerID = customerID;
+        this.bookingID = bookingID;
+        this.checkInTime = checkInTime;
+        this.isDeleted = false;
+        this.nop =nop;
     }
 
     // Getters and setters
+
+    public int getNop() {
+        return nop;
+    }
+
+    public void setNop(int nop) {
+        this.nop = nop;
+    }
+
+    public int getCustomerID() {
+        return customerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
 
     public int getCheckInID() {
         return checkInID;
@@ -33,11 +63,11 @@ public class RoomCheckIn {
         this.bookingID = bookingID;
     }
 
-    public LocalDateTime getCheckInTime() {
+    public Timestamp getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(LocalDateTime checkInTime) {
+    public void setCheckInTime(Timestamp checkInTime) {
         this.checkInTime = checkInTime;
     }
 

@@ -7,7 +7,7 @@ public class Customer {
     private String phoneNumber;
     private boolean isDeleted;
 
-    public Customer(int customerID, String fullName, String idNumber, String phoneNumber, boolean isDeleted) {
+    public Customer(String fullName, String idNumber, String phoneNumber) {
         this.customerID = customerID;
         this.fullName = fullName;
         this.idNumber = idNumber;

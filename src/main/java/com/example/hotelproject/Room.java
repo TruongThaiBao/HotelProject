@@ -1,20 +1,55 @@
 package com.example.hotelproject;
 
+import javafx.beans.property.*;
+
 public class Room {
     private int roomID;
     private String roomNumber;
     private int roomTypeID;
     private boolean isDeleted;
-    private boolean status;
+    private boolean Status;
+    private  String roomTypeName;
+    private  String roomPrice;
+    public Room(int roomID,String roomNumber, boolean Status, String roomTypeName, String roomPrice,int roomTypeID) {
+        this.roomID = roomID;
+        this.roomTypeName=roomTypeName;
+        this.roomPrice=roomPrice;
+        this.Status = Status;
+        this.roomNumber=roomNumber;
+        this.roomTypeID=roomTypeID;
+    }
+    public Room() {
+
+    }
+
+
+    public String getRoomTypeName() {
+        return roomTypeName;
+    }
+
+    public void setRoomTypeName(String roomTypeName) {
+        this.roomTypeName = roomTypeName;
+    }
+
+    public String getRoomPrice() {
+        return roomPrice;
+    }
+
+    public void setRoomPrice(String roomPrice) {
+        this.roomPrice = roomPrice;
+    }
 
     // Constructor
-    public Room(int roomID, String roomNumber, int roomTypeID, boolean isDeleted, boolean status) {
+    public Room(int roomID, String roomNumber, int roomTypeID, boolean isDeleted, boolean Status , String roomTypeName , String roomPrice) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.roomTypeID = roomTypeID;
         this.isDeleted = isDeleted;
-        this.status = status;
+        this.Status = Status;
+        this.roomTypeName=roomTypeName;
+        this.roomPrice=roomPrice;
     }
+
 
     public int getRoomID() {
         return roomID;
@@ -49,11 +84,25 @@ public class Room {
     }
 
     public boolean isStatus() {
-        return status;
+        return Status;
     }
-
     public void setStatus(boolean status) {
-        this.status = status;
+        this.Status = status;
+    }
+    public IntegerProperty roomIDProperty() {
+        return new SimpleIntegerProperty(roomID);
+    }
+    public StringProperty roomNumberProperty() {
+        return new SimpleStringProperty(roomNumber);
+    }
+    public BooleanProperty statusProperty() {
+        return new SimpleBooleanProperty(Status);
+    }
+    public StringProperty roomTypeNameProperty() {
+        return new SimpleStringProperty(roomTypeName);
+    }
+    public StringProperty roomPriceProperty() {
+        return new SimpleStringProperty(roomPrice);
     }
 }
 

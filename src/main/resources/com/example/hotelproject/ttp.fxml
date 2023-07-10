@@ -8,15 +8,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="658.0" prefWidth="1168.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="658.0" prefWidth="1168.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomsController">
       <children>
-         <TableView prefHeight="600.0" prefWidth="851.0">
+         <TableView fx:id="tableView" layoutX="3.0" layoutY="2.0" prefHeight="600.0" prefWidth="851.0">
             <columns>
-               <TableColumn prefWidth="62.66668701171875" text="STT" />
-               <TableColumn prefWidth="152.0" text="MÃ PHÒNG" />
-               <TableColumn minWidth="0.0" prefWidth="196.0" text="TÊN PHÒNG" />
-               <TableColumn prefWidth="188.0" text="TRẠNG THÁI" />
-               <TableColumn prefWidth="251.0" text="ĐƠN GIÁ" />
+               <TableColumn fx:id="roomIDColumn" prefWidth="130.0" text="MÃ PHÒNG" />
+               <TableColumn fx:id="roomNumColumn" prefWidth="130.0" text="SỐ PHÒNG" />
+               <TableColumn fx:id="roomTypeNameColumn" minWidth="0.0" prefWidth="196.0" text="TÊN PHÒNG" />
+               <TableColumn fx:id="statusColumn" prefWidth="150.0" text="TRẠNG THÁI" />
+               <TableColumn fx:id="roomPriceColumn" prefWidth="220.0" text="ĐƠN GIÁ" />
             </columns>
          </TableView>
          <Label layoutX="872.0" layoutY="14.0" text="MÃ PHÒNG">
@@ -24,32 +24,33 @@
                <Font size="14.0" />
             </font>
          </Label>
-         <TextField layoutX="873.0" layoutY="37.0" prefHeight="38.0" prefWidth="282.0" />
-         <Button layoutX="876.0" layoutY="332.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="87.0" text="THÊM " />
-         <Label layoutX="871.0" layoutY="78.0" prefHeight="29.0" prefWidth="78.0" text="TÊN PHÒNG">
+         <TextField fx:id="t_idroom" layoutX="873.0" layoutY="37.0" prefHeight="38.0" prefWidth="282.0" />
+
+         <Button fx:id="b_add" layoutX="878.0" layoutY="383.0" mnemonicParsing="false" onAction="#insertButton" prefHeight="51.0" prefWidth="87.0" text="LƯU " />
+         <Label layoutX="876.0" layoutY="154.0" prefHeight="26.0" prefWidth="90.0" text="TRẠNG THÁI">
             <font>
                <Font size="14.0" />
             </font>
          </Label>
-         <TextField layoutX="873.0" layoutY="108.0" prefHeight="38.0" prefWidth="282.0" />
-         <Label layoutX="876.0" layoutY="150.0" prefHeight="26.0" prefWidth="90.0" text="TRẠNG THÁI">
+         <TextField fx:id="t_status" layoutX="873.0" layoutY="187.0" prefHeight="38.0" prefWidth="282.0" />
+         <Label layoutX="876.0" layoutY="233.0" prefHeight="30.0" prefWidth="90.0" text="LOẠI PHÒNG">
             <font>
                <Font size="14.0" />
             </font>
          </Label>
-         <TextField layoutX="875.0" layoutY="183.0" prefHeight="38.0" prefWidth="282.0" />
-         <Label layoutX="872.0" layoutY="228.0" prefHeight="29.0" prefWidth="78.0" text="ĐƠN GIÁ">
-            <font>
-               <Font size="14.0" />
-            </font>
-         </Label>
-         <TextField layoutX="870.0" layoutY="266.0" prefHeight="38.0" prefWidth="282.0" />
-         <Button layoutX="1063.0" layoutY="332.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="87.0" text="SỬA" />
-         <Button layoutX="876.0" layoutY="468.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="87.0" text="XÓA" />
-         <Button layoutX="1060.0" layoutY="466.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="87.0" text="CLEAR" />
-         <Label layoutX="479.0" layoutY="610.0" prefHeight="29.0" prefWidth="210.0" text="TỔNG 30 PHÒNG">
+         <TextField fx:id="t_loai" layoutX="873.0" layoutY="274.0" prefHeight="38.0" prefWidth="282.0" />
+         <Button fx:id="b_update" layoutX="1061.0" layoutY="383.0" mnemonicParsing="false" onAction="#updateButton" prefHeight="51.0" prefWidth="87.0" text="SỬA" />
+         <Button fx:id="b_delete" layoutX="878.0" layoutY="483.0" mnemonicParsing="false" onAction="#deleteButton" prefHeight="51.0" prefWidth="87.0" text="XÓA" />
+         <Button fx:id="b_clear" layoutX="1061.0" layoutY="483.0" mnemonicParsing="false" onAction="#clearButton" prefHeight="51.0" prefWidth="87.0" text="CLEAR" />
+         <Label fx:id="CountRoom" layoutX="479.0" layoutY="610.0" prefHeight="29.0" prefWidth="210.0" text="TỔNG 30 PHÒNG">
             <font>
                <Font size="24.0" />
             </font>
          </Label>
+      <Label layoutX="873.0" layoutY="78.0" text="SỐ PHÒNG">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <TextField fx:id="t_numRoom" layoutX="873.0" layoutY="106.0" prefHeight="38.0" prefWidth="282.0" />
       </children></AnchorPane>

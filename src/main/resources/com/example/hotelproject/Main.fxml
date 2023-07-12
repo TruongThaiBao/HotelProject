@@ -36,7 +36,7 @@
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
             </Button>
-            <Button mnemonicParsing="false" onAction="#onPhongButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="PHÒNG">
+            <Button mnemonicParsing="false" onAction="#onPhongButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="DANH SÁCH PHÒNG">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -53,6 +53,14 @@
                </font>
             </Button>
             <Button mnemonicParsing="false" onAction="#onThongKeButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="THỐNG KÊ">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Times New Roman Bold" size="20.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#onBookingButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="BOOKING">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -78,6 +86,6 @@
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="rightPane"  alignment="TOP_LEFT" prefHeight="705.0" prefWidth="1263.0" BorderPane.alignment="TOP_LEFT" />
+      <StackPane fx:id="rightPane" alignment="TOP_LEFT" prefHeight="705.0" prefWidth="1263.0" BorderPane.alignment="TOP_LEFT" />
    </center>
 </BorderPane>

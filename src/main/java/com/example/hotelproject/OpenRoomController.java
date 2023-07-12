@@ -24,14 +24,13 @@ public class OpenRoomController implements Initializable {
     @FXML
     private Label roomPrice, roomNumber, timeField;
     @FXML
-    private ComboBox cbbbookingID;
-    @FXML
     private RadioButton fKhachVangLai;
     @FXML
     private String userData;
     @FXML
     private TextField fcustomerName, fnumberID, fphoneNumber, fnop, fbookingID;
     private StackPane rightPane;
+    private int roomID;
 
     public void setRightPane(StackPane rightPane) {
         this.rightPane = rightPane;
@@ -44,6 +43,34 @@ public class OpenRoomController implements Initializable {
         this.userData = userData;
         initialize(null, null);
     }
+//    public void setRoomData(String roomNumber) {
+//        try {
+//            Room room = Room_DAO.getRoomByRoomNumber(roomNumber);
+//            if (room != null) {
+//                roomNumberLabel.setText(room.getRoomNumber());
+//                roomStatusLabel.setText(room.getStatus() == 1 ? "Occupied" : "Vacant");
+//            }
+//
+//            // Lấy thông tin check-in từ cơ sở dữ liệu dựa trên ID phòng
+//            RoomCheckIn roomCheckIn = Room_DAO.getRoomCheckInByRoomID(room.getRoomID());
+//            if (roomCheckIn != null) {
+//                checkInDateLabel.setText(roomCheckIn.getCheckInDate().toString());
+//                checkOutDateLabel.setText(roomCheckIn.getCheckOutDate().toString());
+//
+//                // Lấy thông tin khách hàng từ cơ sở dữ liệu dựa trên ID khách hàng
+//                Customer customer = Room_DAO.getCustomerByCustomerID(roomCheckIn.getCustomerID());
+//                if (customer != null) {
+//                    customerNameLabel.setText(customer.getFullName());
+//                    customerIdLabel.setText(customer.getIdNumber());
+//                    customerPhoneLabel.setText(customer.getPhoneNumber());
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            // Xử lý lỗi nếu cần thiết
+//        }
+//    }
+
 
     @FXML
     public void handleChooseRadioButton(){
@@ -65,66 +92,70 @@ public class OpenRoomController implements Initializable {
         String phoneNumber = fphoneNumber.getText();
         int nop = Integer.parseInt(fnop.getText());
 
+        Customer customer = new Customer(fullName, idNumber, phoneNumber);
+        roomID = Integer.parseInt(userData);
 
-        if (!fKhachVangLai.isSelected()) {
-            int bookingID = Integer.parseInt(fbookingID.getText());
-            Customer customer = new Customer(fullName, idNumber, phoneNumber);
-            RoomCheckIn roomCheckIn = new RoomCheckIn(bookingID, nop);
-            try {
-                Room_DAO.createCustomer_CheckIn(customer, roomCheckIn);
-                // Hiển thị thông báo thành công
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Data saved successfully!");
-                alert.showAndWait();
-            } catch (SQLException e) {
-                // Xử lý lỗi nếu có
-                e.printStackTrace();
-                // Hiển thị thông báo lỗi
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("An error occurred while saving data.");
-                alert.showAndWait();
-            }
-        }else {
-            Customer customer = new Customer(fullName, idNumber, phoneNumber);
-            RoomCheckIn roomCheckIn = new RoomCheckIn(nop);
-            try {
-                Room_DAO.createCustomer_CheckIn_NotBooking(customer, roomCheckIn);
-                // Hiển thị thông báo thành công
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                alert.setTitle("Success");
-//                alert.setHeaderText(null);
-//                alert.setContentText("Data saved successfully!");
-//                alert.showAndWait();
-            } catch (SQLException e) {
-                // Xử lý lỗi nếu có
-                e.printStackTrace();
-                // Hiển thị thông báo lỗi
-//                Alert alert = new Alert(Alert.AlertType.ERROR);
-//                alert.setTitle("Error");
-//                alert.setHeaderText(null);
-//                alert.setContentText("An error occurred while saving data.");
-//                alert.showAndWait();
-            }
-        }
-        roomPrice.getScene().getWindow().hide();
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomDetailView.fxml"));
-            Parent roomDetail = loader.load();
+            if (!fKhachVangLai.isSelected()) {
+                int bookingID = Integer.parseInt(fbookingID.getText());
+                RoomCheckIn roomCheckIn = new RoomCheckIn(roomID, bookingID, nop);
+                Room_DAO.createCustomer_CheckIn(customer, roomCheckIn);
+            } else {
+                RoomCheckIn roomCheckIn = new RoomCheckIn(roomID, nop);
+                Room_DAO.createCustomer_CheckIn_NotBooking(customer, roomCheckIn);
+            }
 
-            // Cung cấp bất kỳ dữ liệu nào cho RoomDetailController (nếu cần)
-//            RoomDetailController roomDetailController = loader.getController();
-            // roomDetailController.setData(...);
+//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//            alert.setTitle("Success");
+//            alert.setHeaderText(null);
+//            alert.setContentText("Data saved successfully!");
+//            alert.showAndWait();
 
-            rightPane.getChildren().setAll(roomDetail);
-        } catch (IOException e) {
-            e.printStackTrace();
+            roomPrice.getScene().getWindow().hide();
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomDetailView.fxml"));
+                Parent roomDetail = loader.load();
+
+                RoomDetailController roomDetailController = loader.getController();
+                roomDetailController.setUserData(userData);
+                roomDetailController.setDataAndInitialize(userData);
+
+                rightPane.getChildren().setAll(roomDetail);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (SQLException e) {
+//            e.printStackTrace();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText(null);
+//            alert.setContentText("An error occurred while saving data.");
+//            alert.showAndWait();
         }
 
-
+        //
+//        try {
+//            Room room2 = Room_DAO.getRoomByRoomNumber(roomNumber.getText());
+//            RoomCheckIn roomCheckIn2 = Room_DAO.getRoomCheckInByRoomID(room2.getRoomID());
+//            Customer customer2 = Room_DAO.getCustomerByCustomerID(roomCheckIn2.getCustomerID());
+//
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomDetailView.fxml"));
+//            Parent roomDetail = loader.load();
+//
+//            RoomDetailController roomDetailController = loader.getController();
+//            roomDetailController.setRoomData(room2);
+//            roomDetailController.setCustomerData(customer2);
+//            roomDetailController.setRoomCheckInData(roomCheckIn2);
+//
+//            rightPane.getChildren().setAll(roomDetail);
+//        } catch (IOException | SQLException e) {
+//            e.printStackTrace();
+//            Alert alert = new Alert(Alert.AlertType.ERROR);
+//            alert.setTitle("Error");
+//            alert.setHeaderText(null);
+//            alert.setContentText("An error occurred while fetching room data.");
+//            alert.showAndWait();
+//        }
     }
 
     @Override

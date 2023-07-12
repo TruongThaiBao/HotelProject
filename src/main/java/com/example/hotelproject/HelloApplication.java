@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 
 public class HelloApplication extends Application {
     @Override
@@ -16,10 +17,10 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
 //        stage.setFullScreen(true);
         stage.show();
-//        Conect.getInstance();
     }
 
     public static void main(String[] args) {
         launch();
     }
+
 }

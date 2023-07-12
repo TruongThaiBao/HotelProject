@@ -44,41 +44,38 @@ public class RoomList_DAO {
         }
         return totalRoom;
     }
-    public static void insertRoom(int roomID, String roomNumber, boolean status, int loaiRoom) {
+    public static void insertRoom(int roomID, String roomNumber, int loaiRoom) {
         try {
-            String query = "INSERT INTO rooms (RoomID, RoomNumber, Status,RoomTypeID) " +
-                    "VALUES (?, ?, ?,?)";
+            String query = "INSERT INTO rooms (RoomID, RoomNumber,RoomTypeID) " +
+                    "VALUES (?,?,?)";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, roomID);
             stmt.setString(2, roomNumber);
-            stmt.setBoolean(3, status);
-            stmt.setInt(4,loaiRoom);
+            stmt.setInt(3,loaiRoom);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void updateRoom(int roomID, String roomNumber, boolean status, int roomTypeID) {
+    public static void updateRoom(int roomID, String roomNumber, int roomTypeID) {
         try {
-            String query = "UPDATE rooms SET RoomNumber = ?, Status = ?, RoomTypeID = ? WHERE RoomID = ?";
+            String query = "UPDATE rooms SET RoomNumber = ?, RoomTypeID = ? WHERE RoomID = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, roomNumber);
-            stmt.setBoolean(2, status);
-            stmt.setInt(3, roomTypeID);
-            stmt.setInt(4, roomID);
+            stmt.setInt(2, roomTypeID);
+            stmt.setInt(3, roomID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void deleteRoom(int roomID, String roomNumber, boolean status, int roomTypeID) {
+    public static void deleteRoom(int roomID, String roomNumber, int roomTypeID) {
         try {
-            String query = "DELETE FROM rooms WHERE RoomID = ? AND RoomNumber = ? AND Status = ? AND RoomTypeID = ?";
+            String query = "DELETE FROM rooms WHERE RoomID = ? AND RoomNumber = ?  AND RoomTypeID = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, roomID);
             stmt.setString(2, roomNumber);
-            stmt.setBoolean(3, status);
-            stmt.setInt(4, roomTypeID);
+            stmt.setInt(3, roomTypeID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

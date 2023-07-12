@@ -37,15 +37,11 @@ public class RoomsController implements Initializable {
     @FXML
     private TextField t_idroom, t_status, t_numRoom, t_loai;
 
-    public RoomsController() {
-    }
-
     private void handleRowClick() {
         Room selectedRoom = tableView.getSelectionModel().getSelectedItem();
         if (selectedRoom != null) {
             t_idroom.setText(String.valueOf(selectedRoom.getRoomID()));
             t_numRoom.setText(selectedRoom.getRoomNumber());
-            t_status.setText(String.valueOf(selectedRoom.isStatus()));
             String flag = String.valueOf(selectedRoom.getRoomTypeID());
             t_loai.setText(flag);
         }
@@ -62,9 +58,8 @@ public class RoomsController implements Initializable {
                 int roomtypeID = resultSet.getInt("RoomTypeID");
                 String roomNum = resultSet.getString("RoomNumber");
                 String roomTypeName = resultSet.getString("RoomTypeName");
-                boolean status = resultSet.getBoolean("Status");
                 String roomPrice = resultSet.getString("BasePrice");
-                Room room = new Room(roomID, roomNum, status, roomTypeName, roomPrice, roomtypeID);
+                Room room = new Room(roomID, roomNum, roomTypeName, roomPrice, roomtypeID);
                 rooms.add(room);
             }
         } catch (SQLException e) {
@@ -72,7 +67,6 @@ public class RoomsController implements Initializable {
         }
         roomNumColumn.setCellValueFactory(cellData -> cellData.getValue().roomNumberProperty());
         roomIDColumn.setCellValueFactory(cellData -> cellData.getValue().roomIDProperty().asObject());
-        statusColumn.setCellValueFactory(cellData -> cellData.getValue().statusProperty().asObject());
         roomTypeNameColumn.setCellValueFactory(cellData -> cellData.getValue().roomTypeNameProperty());
         roomPriceColumn.setCellValueFactory(cellData -> cellData.getValue().roomPriceProperty());
         tableView.setItems(rooms);
@@ -80,18 +74,14 @@ public class RoomsController implements Initializable {
     public void ifQuerry(){
         String roomIDText = t_idroom.getText();
         String roomNumberText = t_numRoom.getText();
-        String statusText = t_status.getText();
+
         String roomTypeIDText = t_loai.getText();
-        if (roomIDText.isEmpty() || roomNumberText.isEmpty() || statusText.isEmpty() || roomTypeIDText.isEmpty()) {
+        if (roomIDText.isEmpty() || roomNumberText.isEmpty()  || roomTypeIDText.isEmpty()) {
             showErrorMessage("Tất cả dữ liệu phải được nhập đầy đủ !");
             return;
         }
         if (!roomIDText.matches("\\d+") && !roomTypeIDText.matches("\\d+")&& !roomNumberText.matches("\\d+")){
             showErrorMessage("Mã Phòng và Số Phòng và Loại Phòng phải  là số !");
-            return;
-        }
-        if (!statusText.equalsIgnoreCase("true") && !statusText.equalsIgnoreCase("false")) {
-            showErrorMessage("Giá trị của trạng thái phải là true(Có Khách) hoặc là false(Trống)");
             return;
         }
     }
@@ -100,28 +90,23 @@ public class RoomsController implements Initializable {
         ifQuerry();
         int roomID = Integer.parseInt(t_idroom.getText());
         String roomNumber = String.valueOf(t_numRoom.getText());
-        boolean status = Boolean.parseBoolean(t_status.getText());
         int loaiRoom = Integer.parseInt(t_loai.getText());
-        RoomList_DAO.insertRoom(roomID, roomNumber, status, loaiRoom);
+        RoomList_DAO.insertRoom(roomID, roomNumber, loaiRoom);
         show();
         t_idroom.clear();
         t_numRoom.clear();
-        t_status.clear();
     }
     @FXML
     protected void updateButton() {
         ifQuerry();
         int roomID = Integer.parseInt(t_idroom.getText());
         String roomNumber = String.valueOf(t_numRoom.getText());
-        boolean status = Boolean.parseBoolean(t_status.getText());
         int loaiRoom = Integer.parseInt(t_loai.getText());
-        RoomList_DAO.updateRoom(roomID, roomNumber, status, loaiRoom);
+        RoomList_DAO.updateRoom(roomID, roomNumber, loaiRoom);
         show();
         t_idroom.clear();
         t_numRoom.clear();
-        t_status.clear();
     }
-
     @FXML
     protected void deleteButton() {
         ifQuerry();
@@ -133,9 +118,8 @@ public class RoomsController implements Initializable {
         if (result.isPresent() && result.get() == ButtonType.OK) {
             int roomID = Integer.parseInt(t_idroom.getText());
             String roomNumber = String.valueOf(t_numRoom.getText());
-            boolean status = Boolean.parseBoolean(t_status.getText());
             int loaiRoom = Integer.parseInt(t_loai.getText());
-            RoomList_DAO.deleteRoom(roomID, roomNumber, status, loaiRoom);
+            RoomList_DAO.deleteRoom(roomID, roomNumber, loaiRoom);
             show();
         }
     }
@@ -155,8 +139,9 @@ public class RoomsController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL url, ResourceBundle resourceBundle) {
         show();
         tableView.setOnMouseClicked(event -> handleRowClick());
-        }
+
+    }
 }

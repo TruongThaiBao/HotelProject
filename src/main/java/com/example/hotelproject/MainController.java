@@ -47,6 +47,20 @@ public class MainController implements Initializable {
             e.printStackTrace();
         }
     }
+    private void openRoomDetail(String userData){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomDetailView.fxml"));
+            Parent roomDetail = loader.load();
+
+            RoomDetailController roomDetailController = loader.getController();
+            roomDetailController.setUserData(userData);
+            roomDetailController.setDataAndInitialize(userData);
+
+            rightPane.getChildren().setAll(roomDetail);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     private void onDatPhongButtonClick() {
@@ -65,11 +79,16 @@ public class MainController implements Initializable {
             while (resultSet.next()) {
                 String tenPhong = resultSet.getString("RoomNumber");
                 String id = resultSet.getString("RoomID");
+                int status = resultSet.getInt("Status");
                 Button button = new Button(tenPhong);
                 button.setOnAction(event -> {
                     System.out.println("Đã nhấn vào phòng: " + tenPhong);
                     System.out.println(id);
-                    openRoom(id);
+                    if (status == 1) {
+                        openRoomDetail(id);
+                    } else {
+                        openRoom(id);
+                    }
                 });
 
                 gridPane.add(button, columnIndex, rowIndex);
@@ -128,6 +147,16 @@ public class MainController implements Initializable {
         rightPane.getChildren().clear();
         try {
             Parent thongKeView = FXMLLoader.load(getClass().getResource("ThongKeView.fxml"));
+            rightPane.getChildren().setAll(thongKeView);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void onBookingButtonClick() {
+        rightPane.getChildren().clear();
+        try {
+            Parent thongKeView = FXMLLoader.load(getClass().getResource("BookingView.fxml"));
             rightPane.getChildren().setAll(thongKeView);
         } catch (IOException e) {
             e.printStackTrace();

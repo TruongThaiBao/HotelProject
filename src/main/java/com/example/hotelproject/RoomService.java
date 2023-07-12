@@ -1,21 +1,46 @@
 package com.example.hotelproject;
 
+import java.sql.Timestamp;
+
 public class RoomService {
     private int roomServiceID;
-    private int bookingID;
+    private int roomID;
     private int serviceID;
     private int quantity;
     private double servicePrice;
-    private boolean isDeleted;
+    private Timestamp time;
+    private boolean deleted;
 
     // Constructor
-    public RoomService(int roomServiceID, int bookingID, int serviceID, int quantity, double servicePrice, boolean isDeleted) {
+    public RoomService(int roomServiceID, int roomID, int serviceID, int quantity, double servicePrice,Timestamp time, boolean deleted) {
         this.roomServiceID = roomServiceID;
-        this.bookingID = bookingID;
+        this.roomID = roomID;
         this.serviceID = serviceID;
         this.quantity = quantity;
         this.servicePrice = servicePrice;
-        this.isDeleted = isDeleted;
+        this.time = time;
+        this.deleted = deleted;
+    }
+    public RoomService(int roomID, int serviceID, int quantity, double servicePrice) {
+        this.roomServiceID = roomServiceID;
+        this.roomID = roomID;
+        this.serviceID = serviceID;
+        this.quantity = quantity;
+        this.servicePrice = servicePrice;
+        this.time = time;
+        this.deleted = deleted;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 
     public int getRoomServiceID() {
@@ -26,12 +51,12 @@ public class RoomService {
         this.roomServiceID = roomServiceID;
     }
 
-    public int getBookingID() {
-        return bookingID;
+    public int getRoomID() {
+        return roomID;
     }
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
     }
 
     public int getServiceID() {
@@ -58,12 +83,12 @@ public class RoomService {
         this.servicePrice = servicePrice;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
+    public boolean getDeleted() {
+        return deleted;
     }
 
     public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+        this.deleted = deleted;
     }
 }
 

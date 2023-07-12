@@ -15,6 +15,21 @@ public class Customer {
         this.isDeleted = isDeleted;
     }
 
+    public Customer(int customerID, String fullName, String idNumber, String phoneNumber) {
+        this.customerID =customerID;
+        this.fullName = fullName;
+        this.idNumber = idNumber;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Customer(int customerID, String fullName, String idNumber, String phoneNumber, Boolean deleted) {
+        this.customerID =customerID;
+        this.fullName = fullName;
+        this.idNumber = idNumber;
+        this.phoneNumber = phoneNumber;
+        this.isDeleted = deleted;
+    }
+
     // Getters and setters
 
     public int getCustomerID() {

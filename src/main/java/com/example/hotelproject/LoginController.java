@@ -1,9 +1,18 @@
 package com.example.hotelproject;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -11,54 +20,67 @@ public class LoginController {
 
     @FXML
     private TextField txtUsername;
+
     @FXML
     private TextField txtPassword;
 
 
-//    @FXML
-//    protected void onLoginButtonClick() {
-//        String username = txtUsername.getText();
-//        String password = txtPassword.getText();
-//
-//        // Thực hiện kiểm tra đăng nhập và xác thực thông tin người dùng
-//        boolean isValidLogin = performLogin(username, password);
-//
-//        if (isValidLogin) {
-//            // Xử lý đăng nhập thành công
-//            System.out.println("Đăng nhập thành công!");
-//        } else {
-//            // Xử lý đăng nhập thất bại
-//            System.out.println("Sai tên đăng nhập hoặc mật khẩu!");
-//        }
+    private Stage loginStage;
+    private int userId;
+
+    public void setLoginStage(Stage loginStage) {
+        this.loginStage = loginStage;
+    }
+//    public void setUserId(int userId) {
+//        this.userId = userId;
 //    }
 
-//    private boolean performLogin(String username, String password) {
-//        try {
-//            // Kết nối đến cơ sở dữ liệu
-//            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
-//
-//            // Chuẩn bị câu truy vấn
-//            String sql = "SELECT * FROM Users WHERE Username = ? AND Password = ?";
-//            PreparedStatement statement = conn.prepareStatement(sql);
-//            statement.setString(1, username);
-//            statement.setString(2, password);
-//
-//            // Thực hiện truy vấn
-//            ResultSet rs = statement.executeQuery();
-//
-//            // Kiểm tra kết quả truy vấn
-//            boolean isValidLogin = rs.next();
-//
-//            // Đóng kết nối và các đối tượng
-//            rs.close();
-//            statement.close();
-//            conn.close();
-//
-//            return isValidLogin;
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            return false;
-//        }
-//    }
+    @FXML
+    private void handleLoginButton(ActionEvent event) throws IOException, SQLException {
+        String username = txtUsername.getText();
+        String password = txtPassword.getText();
 
+        ResultSet resultSet = User_DAO.getIDbyUsernamePassword(username, password);
+        while (resultSet.next()) {
+            userId = resultSet.getInt("UserID");
+            };
+
+        if (username.isEmpty() || password.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Thông báo");
+            alert.setHeaderText(null);
+            alert.setContentText("Vui lòng không để trống !");
+            alert.showAndWait();
+        } else {
+            if (User_DAO.checkLogin(username, password)) {
+                System.out.println("Đăng nhập thành công!");
+
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
+                    Parent root = loader.load();
+
+                    MainController mainController = loader.getController();
+                    mainController.setUserId(userId);
+                    mainController.setUserIDAndInitialize(userId);
+//                    System.out.println(userId);
+
+                    Scene scene = new Scene(root);
+                    Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    primaryStage.setScene(scene);
+                    primaryStage.centerOnScreen();
+                    primaryStage.show();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Sai thông tin đăng nhập");
+                alert.showAndWait();
+            }
+        }
+    }
 }

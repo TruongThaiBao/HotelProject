@@ -1,5 +1,6 @@
 package com.example.hotelproject;
 
+import javafx.animation.AnimationTimer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
@@ -20,12 +22,29 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
     private StackPane rightPane;
+    @FXML
+    private Label fullNameLabel, sysTime;
     private GridPane gridPane = new GridPane();
+    private int userId;
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public void setUserIDAndInitialize(int userId) {
+        this.userId = userId;
+        initialize(null, null);
+    }
+    private void updateSysTime() {
+        LocalDateTime now = LocalDateTime.now();
+        String formattedDateTime = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+        sysTime.setText(formattedDateTime);
+    }
 
     private void openRoom(String userData) {
         try {
@@ -178,5 +197,24 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         onDatPhongButtonClick();
+
+        try {
+            ResultSet resultSet = User_DAO.getNameByUserID(userId);
+            while (resultSet.next()) {
+                String fullName = resultSet.getString("FullName");
+                fullNameLabel.setText(fullName);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        updateSysTime();
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                updateSysTime();
+            }
+        };
+        timer.start();
     }
 }

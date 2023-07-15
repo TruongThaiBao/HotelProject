@@ -12,7 +12,7 @@ public class RoomBooking {
     private int bookingID;
     private int customerID;
     private int roomID;
-    private LocalDateTime bookingTime;
+    private LocalDate bookingTime;
     private LocalDate checkInDate;
     private LocalDate checkOutDate;
     private int userID;
@@ -26,7 +26,7 @@ public class RoomBooking {
         this.customerID=CustomerID;
         this.FullName = FullName;
         this.IDNumber = IDNumber;
-        this.bookingTime = BookingTime.atStartOfDay();
+        this.bookingTime = BookingTime;
         this.PhoneNumber = PhoneNumber;
         this.roomID = roomID;
         this.checkInDate = checkInDate;
@@ -50,7 +50,7 @@ public class RoomBooking {
         this.bookingID = bookID;
         this.customerID = idCustomer;
         this.roomID = roomID;
-        this.bookingTime = bookingTime.atStartOfDay();
+        this.bookingTime = bookingTime;
         this.checkInDate = checkinRoom;
         this.checkOutDate = checkoutRoom;
         this.userID = userID;
@@ -60,7 +60,7 @@ public class RoomBooking {
         PhoneNum = phoneNum;
     }
     private String PhoneNum;
-    public RoomBooking(int bookingID, int customerID, int roomID, LocalDateTime bookingTime, LocalDate checkInDate, LocalDate checkOutDate, int userID, boolean isDeleted) {
+    public RoomBooking(int bookingID, int customerID, int roomID, LocalDate bookingTime, LocalDate checkInDate, LocalDate checkOutDate, int userID, boolean isDeleted) {
         this.bookingID = bookingID;
         this.customerID = customerID;
         this.roomID = roomID;
@@ -89,11 +89,11 @@ public class RoomBooking {
     public void setRoomID(int roomID) {
         this.roomID = roomID;
     }
-    public LocalDateTime getBookingTime() {
+    public LocalDate getBookingTime() {
         return bookingTime;
     }
 
-    public void setBookingTime(LocalDateTime bookingTime) {
+    public void setBookingTime(LocalDate bookingTime) {
         this.bookingTime = bookingTime;
     }
 

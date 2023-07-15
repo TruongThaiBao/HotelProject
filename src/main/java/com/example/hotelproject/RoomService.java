@@ -9,6 +9,7 @@ public class RoomService {
     private int quantity;
     private double servicePrice;
     private Timestamp time;
+    private int userID;
     private boolean deleted;
 
     // Constructor
@@ -21,14 +22,23 @@ public class RoomService {
         this.time = time;
         this.deleted = deleted;
     }
-    public RoomService(int roomID, int serviceID, int quantity, double servicePrice) {
+    public RoomService(int roomID, int serviceID, int quantity, double servicePrice, int userID) {
         this.roomServiceID = roomServiceID;
         this.roomID = roomID;
         this.serviceID = serviceID;
         this.quantity = quantity;
         this.servicePrice = servicePrice;
         this.time = time;
+        this.userID = userID;
         this.deleted = deleted;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public boolean isDeleted() {

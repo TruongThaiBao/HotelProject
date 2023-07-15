@@ -8,6 +8,7 @@ public class RoomPayment {
     private Double extraCharge;
     private Double discount;
     private boolean isDeleted;
+    private int userID;
 
     // Constructor
     public RoomPayment(int paymentID, int bookingID, double roomCharge, double serviceCharge, Double extraCharge, Double discount, boolean isDeleted) {
@@ -18,6 +19,14 @@ public class RoomPayment {
         this.extraCharge = extraCharge;
         this.discount = discount;
         this.isDeleted = isDeleted;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public int getPaymentID() {

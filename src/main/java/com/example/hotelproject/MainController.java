@@ -40,6 +40,10 @@ public class MainController implements Initializable {
         this.userId = userId;
         initialize(null, null);
     }
+    public void initializeWithData(int userId) {
+        setUserId(userId);
+        setUserIDAndInitialize(userId);
+    }
     private void updateSysTime() {
         LocalDateTime now = LocalDateTime.now();
         String formattedDateTime = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
@@ -55,6 +59,8 @@ public class MainController implements Initializable {
             openRoomController.setUserData(userData);
             openRoomController.setDataAndInitialize(userData);
             openRoomController.setRightPane(rightPane);
+            openRoomController.setUserId(userId);
+            openRoomController.setUserIDAndInitialize(userId);
 
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
@@ -74,6 +80,8 @@ public class MainController implements Initializable {
             RoomDetailController roomDetailController = loader.getController();
             roomDetailController.setUserData(userData);
             roomDetailController.setDataAndInitialize(userData);
+            roomDetailController.setUserId(userId);
+            roomDetailController.setUserIDAndInitialize(userId);
 
             rightPane.getChildren().setAll(roomDetail);
         } catch (IOException e) {
@@ -175,12 +183,19 @@ public class MainController implements Initializable {
     private void onBookingButtonClick() {
         rightPane.getChildren().clear();
         try {
-            Parent thongKeView = FXMLLoader.load(getClass().getResource("BookingView.fxml"));
-            rightPane.getChildren().setAll(thongKeView);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("BookingView.fxml"));
+            Parent roomBooking = loader.load();
+
+            RoomBookingController roomBookingController = loader.getController();
+            roomBookingController.setUserId(userId);
+            roomBookingController.setUserIDAndInitialize(userId);
+
+            rightPane.getChildren().setAll(roomBooking);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     @FXML
     private void onThoatButtonClick() {

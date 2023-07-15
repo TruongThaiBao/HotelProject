@@ -22,11 +22,10 @@ public class Room {
     }
 
     public Room(int roomID, String roomNumber, boolean status) {
-        this.roomID = roomID;
-        this.roomNumber=roomNumber;
+        this.roomID =roomID;
+        this.roomNumber = roomNumber;
         this.status = status;
     }
-
 
     public String getRoomTypeName() {
         return roomTypeName;
@@ -50,7 +49,7 @@ public class Room {
         this.roomNumber = roomNumber;
         this.roomTypeID = roomTypeID;
         this.isDeleted = isDeleted;
-        this.status = status;
+        this.status = Status;
         this.roomTypeName=roomTypeName;
         this.roomPrice=roomPrice;
     }

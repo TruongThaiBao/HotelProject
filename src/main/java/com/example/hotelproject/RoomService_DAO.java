@@ -25,13 +25,14 @@ public class RoomService_DAO {
         try {
             connection = Conect.getInstance();
 
-            String query = "INSERT INTO RoomServices (RoomID, ServiceID, Quantity, ServicePrice) VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO RoomServices (RoomID, ServiceID, Quantity, ServicePrice, UserID) VALUES (?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
 
             statement.setInt(1, roomService.getRoomID());
             statement.setInt(2, roomService.getServiceID());
             statement.setInt(3, roomService.getQuantity());
             statement.setDouble(4, roomService.getServicePrice());
+            statement.setInt(5,roomService.getUserID());
 //            statement.setInt(5, roomService.getTimes());
             statement.executeUpdate();
 
@@ -39,6 +40,22 @@ public class RoomService_DAO {
             throw new RuntimeException(e);
         }
     }
+
+    public static void deleteRoomServicesByRoomID(int roomID) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = Conect.getInstance();
+            String query = "DELETE FROM RoomServices WHERE RoomID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, roomID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     public static boolean isRoomServiceExist(int roomID, int serviceID, String tenMatHang) {
         Connection connection = null;
@@ -63,5 +80,25 @@ public class RoomService_DAO {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public static ResultSet getRoomServicesByRoomID(int roomID) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            connection = Conect.getInstance();
+            String query = "SELECT * FROM RoomServices WHERE RoomID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, roomID);
+            resultSet = statement.executeQuery();
+
+            return resultSet;
+        } catch (SQLException e) {
+            System.out.println("Failed to fetch room services from the database.");
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

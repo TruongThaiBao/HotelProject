@@ -11,8 +11,9 @@ public class RoomCheckIn {
     private Timestamp checkInTime;
     private int nop;
     private boolean isDeleted;
+    private int userID;
 
-    public RoomCheckIn(int roomID, int bookingID, int nop) {
+    public RoomCheckIn(int roomID, int bookingID, int nop, int userID) {
         this.checkInID = checkInID;
         this.roomID = roomID;
         this.customerID = customerID;
@@ -20,9 +21,10 @@ public class RoomCheckIn {
         this.checkInTime = checkInTime;
         this.isDeleted = false;
         this.nop =nop;
+        this.userID = userID;
     }
 
-    public RoomCheckIn(int roomID, int nop) {
+    public RoomCheckIn(int roomID, int nop, int userID) {
         this.checkInID = checkInID;
         this.roomID = roomID;
         this.customerID = customerID;
@@ -30,16 +32,18 @@ public class RoomCheckIn {
         this.checkInTime = checkInTime;
         this.isDeleted = false;
         this.nop =nop;
-    }
-
-    public RoomCheckIn(int checkInID, int roomID, int customerID, int nop) {
-        this.checkInID = checkInID;
-        this.roomID = roomID;
-        this.customerID = customerID;
-        this.nop = nop;
+        this.userID = userID;
     }
 
     // Getters and setters
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public int getRoomID() {
         return roomID;

@@ -36,14 +36,19 @@ public class RoomsController implements Initializable {
     private Label CountRoom;
     @FXML
     private TextField t_idroom, t_status, t_numRoom, t_loai;
+    @FXML
+    private ComboBox c_roo;
+
+    public RoomsController() {
+    }
+
 
     private void handleRowClick() {
         Room selectedRoom = tableView.getSelectionModel().getSelectedItem();
         if (selectedRoom != null) {
-            t_idroom.setText(String.valueOf(selectedRoom.getRoomID()));
             t_numRoom.setText(selectedRoom.getRoomNumber());
             String flag = String.valueOf(selectedRoom.getRoomTypeID());
-            t_loai.setText(flag);
+            c_roo.setValue(selectedRoom.getRoomTypeName());
         }
     }
 
@@ -52,6 +57,8 @@ public class RoomsController implements Initializable {
         String count = String.valueOf(RoomList_DAO.calculateTotalRoom());
         CountRoom.setText("Tổng " + count + " Phòng");
         ObservableList<Room> rooms = FXCollections.observableArrayList();
+        ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<String> uniqueItems = FXCollections.observableArrayList();
         try {
             while (resultSet.next()) {
                 int roomID = resultSet.getInt("RoomID");
@@ -60,75 +67,87 @@ public class RoomsController implements Initializable {
                 String roomTypeName = resultSet.getString("RoomTypeName");
                 String roomPrice = resultSet.getString("BasePrice");
                 Room room = new Room(roomID, roomNum, roomTypeName, roomPrice, roomtypeID);
+
+                list.add(roomTypeName);
+                for (String item : list) {
+                    if (!uniqueItems.contains(item)) {
+                        uniqueItems.add(item);
+                    }
+                }
                 rooms.add(room);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        c_roo.setItems(uniqueItems);
         roomNumColumn.setCellValueFactory(cellData -> cellData.getValue().roomNumberProperty());
         roomIDColumn.setCellValueFactory(cellData -> cellData.getValue().roomIDProperty().asObject());
         roomTypeNameColumn.setCellValueFactory(cellData -> cellData.getValue().roomTypeNameProperty());
         roomPriceColumn.setCellValueFactory(cellData -> cellData.getValue().roomPriceProperty());
+
         tableView.setItems(rooms);
     }
-    public void ifQuerry(){
-        String roomIDText = t_idroom.getText();
+    public void ifQuerry() {
         String roomNumberText = t_numRoom.getText();
-
-        String roomTypeIDText = t_loai.getText();
-        if (roomIDText.isEmpty() || roomNumberText.isEmpty()  || roomTypeIDText.isEmpty()) {
+        String roomTypeIDText = (String) c_roo.getValue();
+        if (roomNumberText.isEmpty() || roomTypeIDText.isEmpty()) {
             showErrorMessage("Tất cả dữ liệu phải được nhập đầy đủ !");
             return;
         }
-        if (!roomIDText.matches("\\d+") && !roomTypeIDText.matches("\\d+")&& !roomNumberText.matches("\\d+")){
-            showErrorMessage("Mã Phòng và Số Phòng và Loại Phòng phải  là số !");
+        if (!roomNumberText.matches("\\d+")) {
+            showErrorMessage("Thông tin nhập chưa chính xác !");
             return;
         }
     }
     @FXML
     protected void insertButton() {
         ifQuerry();
-        int roomID = Integer.parseInt(t_idroom.getText());
         String roomNumber = String.valueOf(t_numRoom.getText());
-        int loaiRoom = Integer.parseInt(t_loai.getText());
-        RoomList_DAO.insertRoom(roomID, roomNumber, loaiRoom);
+        String TypeName = (String) c_roo.getValue();
+        if (!roomNumber.matches("\\d+")) {
+            showErrorMessage("Thất Bại !");
+            return;
+        }
+        RoomList_DAO.insertRoom( roomNumber, TypeName);
+
+        if (!roomNumber.isEmpty()){
+            showSuccessMessage("Thành Công");
+        }
         show();
-        t_idroom.clear();
         t_numRoom.clear();
     }
     @FXML
     protected void updateButton() {
         ifQuerry();
-        int roomID = Integer.parseInt(t_idroom.getText());
         String roomNumber = String.valueOf(t_numRoom.getText());
-        int loaiRoom = Integer.parseInt(t_loai.getText());
-        RoomList_DAO.updateRoom(roomID, roomNumber, loaiRoom);
+        String TypeName = (String) c_roo.getValue();
+        if (!roomNumber.matches("\\d+")) {
+            showErrorMessage("Thất Bại !");
+            return;
+        }
+        RoomList_DAO.updateRoom( roomNumber, TypeName);
+        if (!roomNumber.isEmpty()){
+            showSuccessMessage("Thành Công");
+        }
         show();
-        t_idroom.clear();
         t_numRoom.clear();
     }
     @FXML
     protected void deleteButton() {
-        ifQuerry();
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Bạn có chắc chắn muốn xóa ?");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            int roomID = Integer.parseInt(t_idroom.getText());
             String roomNumber = String.valueOf(t_numRoom.getText());
-            int loaiRoom = Integer.parseInt(t_loai.getText());
-            RoomList_DAO.deleteRoom(roomID, roomNumber, loaiRoom);
+            RoomList_DAO.deleteRoom(roomNumber);
             show();
         }
     }
     @FXML
     protected void clearButton() {
-        t_idroom.clear();
         t_numRoom.clear();
-        t_status.clear();
-        t_loai.clear();
     }
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -137,7 +156,13 @@ public class RoomsController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
+    private void showSuccessMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         show();

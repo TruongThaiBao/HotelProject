@@ -9,19 +9,21 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 public class RoomDetailController implements Initializable {
     @FXML
-    private Label roomNumber;
+    private Label roomNumber, tongTienLabel;
     @FXML
     private ComboBox<String> fTenMatHang;
     @FXML
@@ -40,9 +42,11 @@ public class RoomDetailController implements Initializable {
     private int roomID;
     private int serviceID;
     List<Item> newItems = new ArrayList<>();
-
-
     private String userData;
+    private int userId;
+    private Item selectedRow;
+    private int selectedIndex;
+
 
     public static class Item {
         private String tenMatHang;
@@ -104,15 +108,20 @@ public class RoomDetailController implements Initializable {
         this.userData = userData;
         initialize(null, null);
     }
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public void setUserIDAndInitialize(int userId) {
+        this.userId = userId;
+        initialize(null, null);
+    }
     private void switchToMainScreen() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
-
-            // Truyền dữ liệu cần thiết nếu có
-            // mainController.setData(...);
+            mainController.initializeWithData(userId);
 
             Scene scene = new Scene(root);
             Stage stage = (Stage) roomNumber.getScene().getWindow();
@@ -122,7 +131,6 @@ public class RoomDetailController implements Initializable {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     private void onThemButtonClick() {
@@ -153,6 +161,23 @@ public class RoomDetailController implements Initializable {
         }
     }
     @FXML
+    private void onOrderDetailButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("OrderDetail.fxml"));
+            Parent orderDetail = loader.load();
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(orderDetail));
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     private void onThoatButtonClick(){
         switchToMainScreen();
     }
@@ -169,9 +194,6 @@ public class RoomDetailController implements Initializable {
             if (!RoomService_DAO.isRoomServiceExist(roomID, serviceID, tenMatHang)) {
                 newItems.add(new Item(tenMatHang, soLuong, donGia));
             }
-//            // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-//            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia);
-//            RoomService_DAO.saveRoomService(roomService);
         }
 
         for (Item newItem : newItems) {
@@ -181,17 +203,32 @@ public class RoomDetailController implements Initializable {
             double donGia = newItem.getDonGia();
 
             // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia);
+            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
+            System.out.println("test" +userId);
+            RoomService_DAO.saveRoomService(roomService);
+
+        }
+
+        // Xóa dữ liệu cũ trong cơ sở dữ liệu
+        RoomService_DAO.deleteRoomServicesByRoomID(roomID);
+
+        // Lưu dữ liệu mới từ itemList vào cơ sở dữ liệu
+        for (Item item : itemList) {
+            String tenMatHang = item.getTenMatHang();
+            serviceID = (int) Service_DAO.getIDByTenMatHang(item.getTenMatHang());
+            int soLuong = item.getSoLuong();
+            double donGia = item.getDonGia();
+
+            // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
+            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
             RoomService_DAO.saveRoomService(roomService);
         }
         Room_DAO.updateRoomStatus(roomID, 1);
+        loadRoomData();
         switchToMainScreen();
     }
 
-
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void showDataRoomDetail(){
         // Truyền số phòng
         try {
             ResultSet resultSet = Room_DAO.showRoomInformationWithRoomID(userData);
@@ -215,6 +252,7 @@ public class RoomDetailController implements Initializable {
             while (resultSet.next()) {
                 String tenMatHang = resultSet.getString("ServiceName");
                 tenMatHangList.add(tenMatHang);
+                fTenMatHang.setItems(tenMatHangList);
             }
             fTenMatHang.setItems(tenMatHangList);
         } catch (SQLException e) {
@@ -237,5 +275,105 @@ public class RoomDetailController implements Initializable {
         colThanhTien.setStyle("-fx-alignment: CENTER-RIGHT;");
     }
 
+    public void checkRoomStatus(){
+        try {
+            ResultSet resultSet = Room_DAO.showRoomInformationWithRoomID(userData);
+            if (resultSet.next()) {
+                int stt = resultSet.getInt("Status");
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to fetch data from the database.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void loadRoomData() {
+        try {
+            ResultSet resultSet = Room_DAO.showRoomInformationWithRoomID(userData);
+            if (resultSet.next()) {
+                // Cập nhật thông tin phòng từ cơ sở dữ liệu
+                String soPhong = resultSet.getString("RoomNumber");
+                int maPhong = resultSet.getInt("RoomID");
+                roomNumber.setText(soPhong);
+                roomID = maPhong;
+
+                // Hiển thị thông tin mặt hàng đã lưu
+                itemList.clear();
+                ResultSet roomServiceResultSet = RoomService_DAO.getRoomServicesByRoomID(roomID);
+                while (roomServiceResultSet.next()) {
+                    String serviceIDD = roomServiceResultSet.getString("ServiceID");//
+                    String serviceNameResultSet = Service_DAO.getTenMatHangByID(serviceIDD);
+
+                    int soLuong = roomServiceResultSet.getInt("Quantity");
+                    double donGia = roomServiceResultSet.getDouble("ServicePrice");
+                    double thanhTien = soLuong * donGia;
+                    itemList.add(new Item(serviceNameResultSet, soLuong, donGia, thanhTien));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Failed to fetch data from the database.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private String calculateTotalAmount() {
+        double totalAmount = 0;
+        for (Item item : itemList) {
+            totalAmount += item.getThanhTien();
+        }
+
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(totalAmount);
+    }
+
+    //Button lên/xuoonsg
+    private void selectNextRow() {
+        int rowCount = tableViewRoomDetail.getItems().size();
+        if (rowCount > 0) {
+            if (selectedIndex < rowCount - 1) {
+                selectedIndex++;
+            } else {
+                selectedIndex = 0;
+            }
+            selectedRow = tableViewRoomDetail.getItems().get(selectedIndex);
+            tableViewRoomDetail.getSelectionModel().select(selectedRow);
+        }
+    }
+
+    private void selectPreviousRow() {
+        int rowCount = tableViewRoomDetail.getItems().size();
+        if (rowCount > 0) {
+            if (selectedIndex > 0) {
+                selectedIndex--;
+            } else {
+                selectedIndex = rowCount - 1;
+            }
+            selectedRow = tableViewRoomDetail.getItems().get(selectedIndex);
+            tableViewRoomDetail.getSelectionModel().select(selectedRow);
+        }
+    }
+    @FXML
+    private void onLenButtonClick() {
+        selectPreviousRow();
+    }
+
+    @FXML
+    private void onXuongButtonClick() {
+        selectNextRow();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        showDataRoomDetail();
+        loadRoomData();
+        String totalAmount = calculateTotalAmount();
+        tongTienLabel.setText(String.valueOf(totalAmount)+"   VND");
+
+        selectedRow = null;
+        selectedIndex = -1;
+    }
 }

@@ -60,66 +60,47 @@ public class RoomBooking_DAO {
         }
         return rs;
     }
-    public static void insertCustomer( int CustomerID, String FullName , String IDNumber , String PhoneNumber ) {
+
+    public static void insertBooking(LocalDate BookingTime, LocalDate CheckinDate, LocalDate CheckOutDate, int RoomID, int UserID, String FullName, String PhoneNumber, String IDNumber) {
         try {
-            String query = "INSERT INTO customers (CustomerID, FullName, IDNumber,PhoneNumber) " +
-                    "VALUES (?,?,?,?)";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, CustomerID);
-            stmt.setString(2, FullName);
-            stmt.setString(3, IDNumber);
-            stmt.setString(4, PhoneNumber);
-            stmt.executeUpdate();
+            String customerQuery = "INSERT INTO customers (FullName, PhoneNumber, IDNumber) VALUES (?, ?, ?)";
+            PreparedStatement customerStmt = connection.prepareStatement(customerQuery, Statement.RETURN_GENERATED_KEYS);
+            customerStmt.setString(1, FullName);
+            customerStmt.setString(2, PhoneNumber);
+            customerStmt.setString(3, IDNumber);
+            customerStmt.executeUpdate();
+
+            ResultSet generatedKeys = customerStmt.getGeneratedKeys();
+            int generatedId;
+            if (generatedKeys.next()) {
+                generatedId = generatedKeys.getInt(1);
+            } else {
+                throw new SQLException("Failed to get generated key for customer");
+            }
+            String bookingQuery = "INSERT INTO roombookings (CustomerID, RoomID, BookingTime, CheckInDate, CheckOutDate, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement bookingStmt = connection.prepareStatement(bookingQuery);
+            bookingStmt.setInt(1, generatedId);
+            bookingStmt.setInt(2, RoomID);
+            bookingStmt.setDate(3, java.sql.Date.valueOf(BookingTime));
+            bookingStmt.setDate(4, java.sql.Date.valueOf(CheckinDate));
+            bookingStmt.setDate(5, java.sql.Date.valueOf(CheckOutDate));
+            bookingStmt.setInt(6, UserID);
+            bookingStmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static void insertBooking(int BookingID, int CustomerID, int RoomID , LocalDate BookingTime, LocalDate CheckinDate, LocalDate CheckOutDate, int UserID) {
+    public static void updateBooking( LocalDate BookingTime,LocalDate checkinRoom, LocalDate checkoutRoom , String FullName  , String PhoneNumber , String IDNumber,int CustomerID,int RoomID,int BookID) {
         try {
-            String query = "INSERT INTO roombookings (BookingID, CustomerID, RoomID,BookingTime,CheckInDate,CheckOutDate,UserID) " +
-                    "VALUES (?, ?, ?,?,?,?,?)";
+            String query = "UPDATE roombookings SET BookingTime = '" + BookingTime + "', CheckInDate = '" + checkinRoom + "', CheckOutDate = '" + checkoutRoom + "', RoomID = '" + RoomID +  "' WHERE BookingID = " + BookID;
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, BookingID);
-            stmt.setInt(2, CustomerID);
-            stmt.setInt(3, RoomID);
-            stmt.setDate(4, java.sql.Date.valueOf(BookingTime));
-            stmt.setDate(5, java.sql.Date.valueOf(CheckinDate));
-            stmt.setDate(6, java.sql.Date.valueOf(CheckOutDate));
-            stmt.setInt(7,UserID);
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+            String query1 = "UPDATE customers SET FullName = '" + FullName + "', IDNumber = '" + IDNumber + "', PhoneNumber = '" +  "' WHERE CustomerID = " + CustomerID;
+            PreparedStatement stmt1 = connection.prepareStatement(query1);
+            stmt1.executeUpdate();
         }
-    }
-    public static void updateCustomer(int CustomerID , String nameCustomer,String phoneCustomer,String IDNumber){
-        try {
-            String query = "UPDATE customers (IDCustomer,FullName, IDNumber, PhoneNumber) " +
-                    "VALUES (?, ?, ?,?)";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1,CustomerID);
-            stmt.setString(2,nameCustomer);
-            stmt.setString(3,IDNumber);
-            stmt.setString(4,phoneCustomer);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void updateBooking(int bookID,int CustomerID, int roomID, LocalDate BookingTime,LocalDate checkinRoom, LocalDate checkoutRoom, int userID) {
-        try {
-            String query = "UPDATE roombookings SET  CustomerID = ?, RoomID = ?,BookingTime = ?,CheckInDate = ?,CheckOutDate = ?,UserID = ? WHERE BookingID = ? ";
-            PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setInt(1, CustomerID);
-            stmt.setInt(2, roomID);
-            stmt.setDate(3, java.sql.Date.valueOf(BookingTime));
-            stmt.setDate(4, java.sql.Date.valueOf(checkinRoom));
-            stmt.setDate(5, java.sql.Date.valueOf(checkoutRoom));
-            stmt.setInt(6,userID);
-            stmt.setInt(7, bookID);
-            stmt.executeUpdate();
-        } catch (SQLException e) {
+         catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -133,4 +114,5 @@ public class RoomBooking_DAO {
             e.printStackTrace();
         }
     }
+
 }

@@ -90,12 +90,13 @@ public class Room_DAO {
                 customerID = generatedKeys.getInt(1);
             }
 
-            String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, BookingID, NOP) VALUES (?, ?, ?, ?)";
+            String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, BookingID, NOP, UserID) VALUES (?, ?, ?, ?, ?)";
             statement2 = connection.prepareStatement(query2);
             statement2.setInt(1, roomCheckIn.getRoomID());
             statement2.setInt(2, customerID);
             statement2.setInt(3, roomCheckIn.getBookingID());
             statement2.setInt(4, roomCheckIn.getNop());
+            statement2.setInt(5,roomCheckIn.getUserID());
             statement2.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -123,11 +124,12 @@ public class Room_DAO {
                 customerID = generatedKeys.getInt(1);
             }
 
-            String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, NOP) VALUES ( ?, ?, ?)";
+            String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, NOP, UserID) VALUES ( ?, ?, ?, ?)";
             statement2 = connection.prepareStatement(query2);
             statement2.setInt(1, roomCheckIn.getRoomID());
             statement2.setInt(2, customerID);
             statement2.setInt(3, roomCheckIn.getNop());
+            statement2.setInt(4, roomCheckIn.getUserID());
             statement2.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -149,30 +151,19 @@ public class Room_DAO {
             throw new RuntimeException(e);
         }
     }
-    public static Room getRoomByRoomNumber(String roomNumber) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        Room room = null;
-
+    public static ResultSet getRoomIDByRoomNumber(String roomNumber) throws SQLException {
+        ResultSet resultSet;
         try {
-            connection = Conect.getInstance();
             String query = "SELECT * FROM Rooms WHERE RoomNumber = ?";
-            statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(query);
             statement.setString(1, roomNumber);
             resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                int roomID = resultSet.getInt("RoomID");
-                boolean status = resultSet.getBoolean("Status");
-
-                room = new Room(roomID, roomNumber, status);
-            }
         } catch (SQLException e) {
-            throw new SQLException("Failed to fetch room data from the database.", e);
+            throw new RuntimeException(e);
         }
-        return room;
+        return resultSet;
     }
+
     public static RoomCheckIn getRoomCheckInByRoomID(int roomID) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;

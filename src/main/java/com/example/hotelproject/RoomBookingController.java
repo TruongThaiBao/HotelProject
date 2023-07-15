@@ -23,9 +23,6 @@ import java.util.ResourceBundle;
 
 public class RoomBookingController implements Initializable {
     @FXML
-    private VBox vbox;
-
-    @FXML
     private TableView<RoomBooking> tableView, tableView1;
     @FXML
     private TableColumn<RoomBooking, Integer> IDc, IDc1;
@@ -51,8 +48,15 @@ public class RoomBookingController implements Initializable {
     private ComboBox comboBox;
     @FXML
     private TextField t_search;
+    private int userId;
 
-
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+    public void setUserIDAndInitialize(int userId) {
+        this.userId = userId;
+        initialize(null, null);
+    }
     public void showinl() {
         ResultSet resultSet = RoomBooking_DAO.showRooms();
         ObservableList<RoomBooking> roomBookings = FXCollections.observableArrayList();
@@ -85,6 +89,7 @@ public class RoomBookingController implements Initializable {
         CheckOutColumn.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
         UserID.setCellValueFactory(new PropertyValueFactory<>("userID"));
         tableView.setItems(roomBookings);
+        tableView.refresh();
     }
     @FXML
     protected void SearchButton() {
@@ -96,7 +101,6 @@ public class RoomBookingController implements Initializable {
             showErrorMessage("Chưa Chọn Giá Trị Cần Tìm !");
         }
     }
-
     private void performSearch(String option, String searchText) {
         ResultSet resultSet = RoomBooking_DAO.searchData(option, searchText);
         ObservableList<RoomBooking> roomBookings1 = FXCollections.observableArrayList();
@@ -125,7 +129,6 @@ public class RoomBookingController implements Initializable {
                 CheckOutColumn1.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
                 UserID1.setCellValueFactory(new PropertyValueFactory<>("UserID"));
                 tableView1.setItems(roomBookings1);
-
             } else {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Thông báo");
@@ -159,10 +162,14 @@ public class RoomBookingController implements Initializable {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("insertBooking.fxml"));
             Parent root = loader.load();
+            BookingInsertController bookingInsertController = loader.getController();
+            bookingInsertController.setUserId(userId);
+            bookingInsertController.setUserIDAndInitialize(userId);
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.setTitle("Thao Tác");
             stage.show();
+            showinl();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -197,6 +204,13 @@ public class RoomBookingController implements Initializable {
             Parent root = loader.load();
             Scene scene = new Scene(root);
             BookingFixController controller = loader.getController();
+            RoomBooking selected = tableView.getSelectionModel().getSelectedItem();
+            RoomBooking selected1 = tableView1.getSelectionModel().getSelectedItem();
+            if (selected != null) {
+                controller.setBooking(selected);
+            } else {
+                controller.setBooking1(selected1);
+            }
             stage.setScene(scene);
             stage.setTitle("Thao Tác");
             stage.show();
@@ -205,7 +219,6 @@ public class RoomBookingController implements Initializable {
             e.printStackTrace();
         }
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         showinl();

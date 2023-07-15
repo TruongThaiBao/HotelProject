@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
@@ -57,40 +56,30 @@
       </MenuBar>
       <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="452.0" prefWidth="642.0" VBox.vgrow="ALWAYS">
          <children>
-            <Label layoutX="648.0" layoutY="60.0" text="BOOKING ID" />
-            <TextField fx:id="i_bookingid1" layoutX="644.0" layoutY="81.0" prefHeight="35.0" prefWidth="231.0" />
-            <Label layoutX="644.0" layoutY="116.0" text="CUSTOMER ID" />
-            <Label layoutX="644.0" layoutY="173.0" text="ROOM ID" />
-            <Label layoutX="650.0" layoutY="287.0" text="BOOKING TIME" />
-            <DatePicker fx:id="i_booktime1" layoutX="644.0" layoutY="307.0" prefHeight="35.0" prefWidth="231.0" />
-            <Label layoutX="643.0" layoutY="351.0" text="CHECKINDATE" />
-            <DatePicker fx:id="b_checkin1" layoutX="644.0" layoutY="377.0" prefHeight="35.0" prefWidth="231.0" />
-            <Label layoutX="647.0" layoutY="419.0" text="CHECKOUTDATE" />
-            <DatePicker fx:id="b_checkout1" layoutX="644.0" layoutY="444.0" prefHeight="35.0" prefWidth="231.0" />
-            <Label layoutX="648.0" layoutY="227.0" text="USER ID" />
-            <Button id="btn" fx:id="insertbtn1" layoutX="644.0" layoutY="491.0" mnemonicParsing="false" onAction="#FixBookingBtn" prefHeight="63.0" prefWidth="231.0" text="FIX" />
-            <Label layoutX="390.0" layoutY="14.0" prefHeight="35.0" prefWidth="173.0" text="FIX BOOKING ROOM">
+            <Label layoutX="538.0" layoutY="316.0" text="BOOKING TIME" />
+            <DatePicker fx:id="i_booktime1" layoutX="540.0" layoutY="334.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="541.0" layoutY="370.0" text="CHECKINDATE" />
+            <DatePicker fx:id="b_checkin1" layoutX="540.0" layoutY="388.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="543.0" layoutY="424.0" text="CHECKOUTDATE" />
+            <DatePicker fx:id="b_checkout1" layoutX="541.0" layoutY="442.0" prefHeight="35.0" prefWidth="282.0" />
+            <Button id="btn" fx:id="insertbtn1" layoutX="541.0" layoutY="489.0" mnemonicParsing="false" onAction="#FixBookingBtn" prefHeight="53.0" prefWidth="282.0" text="FIX" />
+            <Label layoutX="125.0" layoutY="75.0" prefHeight="35.0" prefWidth="173.0" text="FIX BOOKING ROOM">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <TextField fx:id="i_customer" layoutX="644.0" layoutY="137.0" prefHeight="35.0" prefWidth="231.0" />
-            <TextField fx:id="i_roomid" layoutX="644.0" layoutY="191.0" prefHeight="35.0" prefWidth="231.0" />
-            <TextField fx:id="i_userid" layoutX="644.0" layoutY="246.0" prefHeight="35.0" prefWidth="231.0" />
-            <TableView fx:id="tableView" layoutX="14.0" layoutY="64.0" prefHeight="488.0" prefWidth="610.0">
-               <columns>
-                  <TableColumn fx:id="bookIDColumn" prefWidth="81.33333015441895" text="BOOKING ID" />
-                  <TableColumn fx:id="IDc" minWidth="0.0" prefWidth="128.0" text="CUSTOMER ID" />
-                  <TableColumn fx:id="nameCustomer" minWidth="0.0" prefWidth="128.0" text="TÊN KHÁCH HÀNG" />
-                  <TableColumn fx:id="CustomerIDColumn" prefWidth="128.80006408691406" text="CMND / HỘ CHIẾU" />
-                  <TableColumn fx:id="PhoneCustomerColumn" minWidth="0.0" prefWidth="138.39996337890625" text="SDT" />
-                  <TableColumn fx:id="roomIDColumn" prefWidth="84.0" text="SỐ PHÒNG" />
-                  <TableColumn fx:id="BookingTimeColumn" prefWidth="120.79998779296875" text="BOOKING TIME" />
-                  <TableColumn fx:id="CheckinColumn" prefWidth="120.79998779296875" text="CHECK IN" />
-                  <TableColumn fx:id="CheckOutColumn" prefWidth="93.60009765625" text="CHECK OUT" />
-                  <TableColumn fx:id="UserID" prefWidth="103.199951171875" text="NHÂN VIÊN" />
-               </columns>
-            </TableView>
+            <Label layoutX="537.0" layoutY="208.0" text="SỐ ĐIỆN THOẠI" />
+            <Label layoutX="536.0" layoutY="262.0" text="CMND &amp; PARTPOSS" />
+            <TextField fx:id="i_IDNumber" layoutX="540.0" layoutY="280.0" prefHeight="35.0" prefWidth="282.0" />
+            <TextField fx:id="I_Phonenumber" layoutX="540.0" layoutY="226.0" prefHeight="35.0" prefWidth="282.0" />
+            <Label layoutX="537.0" layoutY="154.0" text="TÊN KHÁCH HÀNG" />
+            <TextField fx:id="I_fullname" layoutX="541.0" layoutY="172.0" prefHeight="35.0" prefWidth="281.0" />
+            <Label layoutX="534.0" layoutY="47.0" text="Mã Khách Hàng :" />
+            <Label fx:id="customer_lb" layoutX="664.0" layoutY="43.0" prefHeight="26.0" prefWidth="82.0" text="BOOKING TIME" />
+            <Label layoutX="536.0" layoutY="101.0" text="Phòng :" />
+            <ComboBox fx:id="c_roomid" layoutX="619.0" layoutY="97.0" prefHeight="26.0" prefWidth="200.0" promptText="Select" />
+            <Label layoutX="534.0" layoutY="73.0" text="Mã Booking :" />
+            <Label fx:id="l_bookid" layoutX="664.0" layoutY="69.0" prefHeight="26.0" prefWidth="82.0" text="BOOKING TIME" />
          </children>
       </AnchorPane>
    </children>

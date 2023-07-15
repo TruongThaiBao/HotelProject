@@ -16,134 +16,160 @@ import java.util.ResourceBundle;
 
 public class BookingFixController implements Initializable {
     @FXML
-    private TextField i_bookingid1 , i_customer , i_roomid , i_userid;
+    ComboBox<Integer> c_roomid;
+
+    @FXML Label customer_lb , l_bookid;
+    @FXML
+    private TextField i_bookingid1 , i_customer , i_roomid , i_userid ,I_Phonenumber , I_fullname , i_IDNumber;
     @FXML
     private DatePicker b_checkin1, b_checkout1 ,i_booktime1;
     @FXML
-    private TableView<RoomBooking> tableView, tableView1;
-    @FXML
-    private TableColumn<RoomBooking, Integer> IDc, IDc1;
-    @FXML
-    private TableColumn<RoomBooking, Integer> bookIDColumn, bookIDColumn1;
-    @FXML
-    private TableColumn<RoomBooking, Integer> roomIDColumn, roomIDColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> nameCustomer, nameCustomer1;
-    @FXML
-    private TableColumn<RoomBooking, String> BookingTimeColumn, BookingTimeColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> CustomerIDColumn, CustomerIDColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> PhoneCustomerColumn, PhoneCustomerColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> CheckinColumn, CheckinColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> CheckOutColumn, CheckOutColumn1;
-    @FXML
-    private TableColumn<RoomBooking, String> UserID, UserID1;
-    public void ifQuerry(){
-        int bookid = Integer.parseInt(i_bookingid1.getText());
-        int customerid = Integer.parseInt(i_customer.getText());
-        int userid = Integer.parseInt(i_userid.getText());
+    protected void FixBookingBtn(){
         LocalDate bookingtime = i_booktime1.getValue();
         LocalDate checkin = b_checkin1.getValue();
         LocalDate checkout = b_checkout1.getValue();
-        String BookIDtext = i_bookingid1.getText();
-        String CustomerIDText = i_customer.getText();
-        String UserIDtext = i_userid.getText();
-        int roomid = Integer.parseInt(i_roomid.getText());
-        if (bookid != 0 || customerid != 0 || userid != 0 || roomid != 0) {
-            showErrorMessage("Customer ID và User ID và RoomID không được để trống");
+        String FullName = I_fullname.getText();
+        String PhoneNumber = I_Phonenumber.getText();
+        String IDNumber = i_IDNumber.getText();
+        Integer roomIDValue = c_roomid.getValue();
+        int RoomID = roomIDValue != null ? roomIDValue.intValue() : 0;
+        int CustomerID = Integer.parseInt(customer_lb.getText());
+        int BookID =Integer.parseInt(l_bookid.getText());
+        if (bookingtime == null || checkin == null || checkout == null || FullName.isEmpty() || PhoneNumber.isEmpty() || IDNumber.isEmpty() || RoomID == 0) {
+            showErrorMessage("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
-        if (!BookIDtext.matches("\\d+") && !CustomerIDText.matches("\\d+")&& !UserIDtext.matches("\\d+")){
-            showErrorMessage("Customer ID và User ID Phải là 1 số nguyên ");
+        if (!validatePhoneNumber(PhoneNumber)) {
+            showErrorMessage("Số điện thoại không hợp lệ!");
             return;
         }
-        if (!BookIDtext.matches("\\d+") && !CustomerIDText.matches("\\d+")&& !UserIDtext.matches("\\d+")){
-            showErrorMessage("Customer ID và User ID Phải là 1 số nguyên ");
+        if (!validateIDNumber(IDNumber)) {
+            showErrorMessage("Số CMND không hợp lệ!");
             return;
         }
-
-    }
-    @FXML
-    protected void FixBookingBtn(){
+        if (!validateDate(bookingtime)){
+            showErrorMessage("Thời Gian Booking Không Hợp Lệ!");
+            return;
+        }
+        if (!validateCheckin(checkin)){
+            showErrorMessage("Thời Gian CheckIn Không Hợp Lệ!");
+            return;
+        }
+        if (!validateCheckout(checkout,checkin)){
+            showErrorMessage("Thời Gian CheckOut Không Hợp Lệ!");
+            return;
+        }
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(null);
         confirmationAlert.setContentText("Bạn có chắc chắn muốn xóa ?");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            int bookid = Integer.parseInt(i_bookingid1.getText());
-            int customerid = Integer.parseInt(i_customer.getText());
-            int userid = Integer.parseInt(i_userid.getText());
-            LocalDate bookingtime = i_booktime1.getValue();
-            LocalDate checkin = b_checkin1.getValue();
-            LocalDate checkout = b_checkout1.getValue();
-            int roomid = Integer.parseInt(i_roomid.getText());
-            RoomBooking_DAO.updateBooking(bookid, customerid, roomid,bookingtime,checkin,checkout,userid);
-            if (bookid != 0) {
-                showSuccessMessage("Cập Nhật Thành Công!");
-                show42();
-            } else {
-                showErrorMessage("Cập Nhật Thất Bại!");
-                 show42();
-            }
+
+            showSuccessMessage("Update Thành Công");
+            RoomBooking_DAO.updateBooking(bookingtime,checkin,checkout,FullName,PhoneNumber,IDNumber,CustomerID,RoomID,BookID);
         }
     }
-    public void show42() {
-        ResultSet resultSet = RoomBooking_DAO.showRooms();
-        ObservableList<RoomBooking> roomBookings = FXCollections.observableArrayList();
-        try {
-            while (resultSet.next()) {
-                int bookingID = resultSet.getInt("BookingID");
-                int CustomerID = resultSet.getInt("CustomerID");
-                String fullName = resultSet.getString("FullName");
-                String IDNumber = resultSet.getString("IDNumber");
-                String phoneNumber = resultSet.getString("PhoneNumber");
-                int roomID = resultSet.getInt("RoomID");
-                LocalDate BookingTime = resultSet.getDate("BookingTime").toLocalDate();
-                LocalDate checkInDate = resultSet.getDate("CheckInDate").toLocalDate();
-                LocalDate checkOutDate = resultSet.getDate("CheckOutDate").toLocalDate();
-                int userID = resultSet.getInt("UserID");
-                RoomBooking roomBooking = new RoomBooking(bookingID,CustomerID, fullName, IDNumber, phoneNumber, roomID,BookingTime, checkInDate, checkOutDate, userID);
-                roomBookings.add(roomBooking);
+    private boolean validatePhoneNumber(String phoneNumber) {
+        if (phoneNumber.length() != 10) {
+            return false;
+        }
+        if (!phoneNumber.startsWith("0")) {
+            return false;
+        }
+        for (char c : phoneNumber.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
+    private boolean validateIDNumber(String idNumber) {
+        int length = idNumber.length();
+        if (length != 9 && length != 12) {
+            return false;
+        }
+        for (char c : idNumber.toCharArray()) {
+            if (!Character.isDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean validateDate(LocalDate date) {
+        LocalDate currentDate = LocalDate.now();
+        if (date.isBefore(currentDate)) {
+            return false;
+        }
+        return true;
+    }
+    private boolean validateCheckin(LocalDate date) {
+        LocalDate currentDate = LocalDate.now();
+        if (date.isBefore(currentDate)) {
+            return false;
+        }
+        return true;
+    }
+    private boolean validateCheckout(LocalDate date, LocalDate CHECKIN) {
+        LocalDate currentDate = LocalDate.now();
+        if (date.isBefore(CHECKIN)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    public void setBooking(RoomBooking rb){
+        String bookingtime = String.valueOf(rb.getBookingTime());
+        i_booktime1.setValue(LocalDate.parse(bookingtime));
+        String Checkin = String.valueOf(rb.getCheckInDate());
+        b_checkin1.setValue(LocalDate.parse(Checkin));
+        String CheckOut = String.valueOf(rb.getCheckOutDate());
+        b_checkout1.setValue(LocalDate.parse(CheckOut));
+        I_fullname.setText(rb.getFullName());
+        I_Phonenumber.setText(rb.getPhoneNumber());
+        i_IDNumber.setText(rb.getIDNumber());
+        int CustomerID = rb.getCustomerID();
+        int BookID = rb.getBookingID();
+        customer_lb.setText(String.valueOf(CustomerID));
+        l_bookid.setText(String.valueOf(BookID));
+        ObservableList<Integer> flag1 = FXCollections.observableArrayList();
+        ResultSet resultSet1 = RoomList_DAO.showRooms();
+        try {
+            while (resultSet1.next()) {
+                int roomID = resultSet1.getInt("RoomID");
+                flag1.add(roomID);
+                c_roomid.setItems(flag1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        bookIDColumn.setCellValueFactory(new PropertyValueFactory<>("bookingID"));
-        IDc.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-        nameCustomer.setCellValueFactory(new PropertyValueFactory<>("fullName"));
-        CustomerIDColumn.setCellValueFactory(new PropertyValueFactory<>("IDNumber"));
-        PhoneCustomerColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        roomIDColumn.setCellValueFactory(new PropertyValueFactory<>("roomID"));
-        BookingTimeColumn.setCellValueFactory(new PropertyValueFactory<>("bookingTime"));
-        CheckinColumn.setCellValueFactory(new PropertyValueFactory<>("checkInDate"));
-        CheckOutColumn.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
-        UserID.setCellValueFactory(new PropertyValueFactory<>("userID"));
-        tableView.setItems(roomBookings);
     }
-        public void handleRowClick() {
-        RoomBooking selectedRoom = tableView.getSelectionModel().getSelectedItem();
-        if (selectedRoom != null) {
-            int BookID = selectedRoom.getBookingID();
-            int IDCustomer = selectedRoom.getCustomerID();
-            int RoomID = selectedRoom.getRoomID();
-            LocalDate BookingTime = LocalDate.from(selectedRoom.getBookingTime());
-            LocalDate CheckinRoom = selectedRoom.getCheckInDate();
-            LocalDate CheckoutRoom = selectedRoom.getCheckOutDate();
-            int UserID = selectedRoom.getUserID();
-            RoomBooking bx = new RoomBooking(BookID,IDCustomer,RoomID,BookingTime,CheckinRoom,CheckoutRoom,UserID);
-            i_bookingid1.setText(String.valueOf(BookID));
-            i_customer.setText(String.valueOf(IDCustomer));
-            i_roomid.setText(String.valueOf(RoomID));
-            i_userid.setText(String.valueOf(UserID));
-            LocalDate iIn = LocalDate.from(BookingTime);
-            i_booktime1.setValue(iIn);
-            b_checkin1.setValue(CheckinRoom);
-            b_checkout1.setValue(CheckoutRoom);
+    public void setBooking1(RoomBooking rb){
+        String bookingtime = String.valueOf(rb.getBookingTime());
+        i_booktime1.setValue(LocalDate.parse(bookingtime));
+        String Checkin = String.valueOf(rb.getCheckInDate());
+        b_checkin1.setValue(LocalDate.parse(Checkin));
+        String CheckOut = String.valueOf(rb.getCheckOutDate());
+        b_checkout1.setValue(LocalDate.parse(CheckOut));
+        I_fullname.setText(rb.getFullName());
+        I_Phonenumber.setText(rb.getPhoneNumber());
+        i_IDNumber.setText(rb.getIDNumber());
+        int CustomerID = rb.getCustomerID();
+        int BookID = rb.getBookingID();
+        customer_lb.setText(String.valueOf(CustomerID));
+        l_bookid.setText(String.valueOf(BookID));
+        ObservableList<Integer> flag1 = FXCollections.observableArrayList();
+        ResultSet resultSet1 = RoomList_DAO.showRooms();
+        try {
+            while (resultSet1.next()) {
+                int roomID = resultSet1.getInt("RoomID");
+                flag1.add(roomID);
+                c_roomid.setItems(flag1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
     private void showSuccessMessage(String message) {
@@ -163,7 +189,5 @@ public class BookingFixController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        show42();
-        tableView.setOnMouseClicked(event -> handleRowClick());
     }
 }

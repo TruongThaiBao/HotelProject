@@ -59,4 +59,26 @@ public class Service_DAO {
         }
         return id;
     }
+
+    public static String getTenMatHangByID(String serviceID) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        String tenMatHang = null;
+
+        try {
+            connection = Conect.getInstance();
+            String query = "SELECT ServiceName FROM Services WHERE ServiceID = ?";
+            statement = connection.prepareStatement(query);
+            statement.setString(1, serviceID);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                tenMatHang = resultSet.getString("ServiceName");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tenMatHang;
+    }
 }

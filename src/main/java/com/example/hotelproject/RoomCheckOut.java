@@ -7,6 +7,7 @@ public class RoomCheckOut {
     private int bookingID;
     private LocalDateTime checkOutTime;
     private boolean isDeleted;
+    private int userID;
 
     public RoomCheckOut(int checkOutID, int bookingID, LocalDateTime checkOutTime, boolean isDeleted) {
         this.checkOutID = checkOutID;
@@ -16,6 +17,14 @@ public class RoomCheckOut {
     }
 
     // Getters and setters
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public int getCheckOutID() {
         return checkOutID;

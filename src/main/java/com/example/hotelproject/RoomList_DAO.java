@@ -1,5 +1,7 @@
 package com.example.hotelproject;
 
+import com.example.hotelproject.Conect;
+
 import java.sql.*;
 
 public class RoomList_DAO {
@@ -56,24 +58,25 @@ public class RoomList_DAO {
             e.printStackTrace();
         }
     }
-    public static void updateRoom(String roomNumber, String roomTypeName) {
+    public static void updateRoom(int roomid,String roomNumber, String roomTypeName) {
         try {
-            String query = "UPDATE Rooms " +
-                    "SET RoomTypeID = (SELECT RoomTypeID FROM roomtypes WHERE RoomTypeID = ?) " +
-                    "WHERE RoomNumber = ?";
+            String query = "UPDATE rooms " +
+                    "SET RoomTypeID = (SELECT RoomTypeID FROM roomtypes WHERE RoomTypeName = ?), RoomNumber = ? " +
+                    "WHERE ROOMID = ? ";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setString(1, roomTypeName);
             stmt.setString(2, roomNumber);
+            stmt.setInt(3, roomid);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-    public static void deleteRoom(String roomNumber) {
+    public static void deleteRoom(int  roomID) {
         try {
-            String query = "DELETE FROM rooms WHERE RoomNumber = ?";
+            String query = "DELETE FROM rooms WHERE RoomID = ?";
             PreparedStatement stmt = connection.prepareStatement(query);
-            stmt.setString(1, roomNumber);
+            stmt.setInt(1, roomID);
             stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

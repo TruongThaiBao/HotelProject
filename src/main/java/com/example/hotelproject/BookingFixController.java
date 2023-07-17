@@ -5,7 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -15,6 +15,11 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class BookingFixController implements Initializable {
+    private RoomBookingController customerController;
+
+    public void setCustomerController(RoomBookingController customerController) {
+        this.customerController = customerController;
+    }
     @FXML
     ComboBox<Integer> c_roomid;
 
@@ -62,12 +67,15 @@ public class BookingFixController implements Initializable {
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmationAlert.setTitle("Confirmation");
         confirmationAlert.setHeaderText(null);
-        confirmationAlert.setContentText("Bạn có chắc chắn muốn xóa ?");
+        confirmationAlert.setContentText("Bạn có chắc chắn muốn cập nhật ?");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
 
             showSuccessMessage("Update Thành Công");
             RoomBooking_DAO.updateBooking(bookingtime,checkin,checkout,FullName,PhoneNumber,IDNumber,CustomerID,RoomID,BookID);
+            Stage currentStage = (Stage) I_fullname.getScene().getWindow();
+            customerController.updateTableView();
+            currentStage.close();
         }
     }
     private boolean validatePhoneNumber(String phoneNumber) {

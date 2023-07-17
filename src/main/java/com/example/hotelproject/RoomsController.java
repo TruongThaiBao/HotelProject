@@ -3,15 +3,9 @@ package com.example.hotelproject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -119,13 +113,16 @@ public class RoomsController implements Initializable {
     @FXML
     protected void updateButton() {
         ifQuerry();
+        Room selectedRoom = tableView.getSelectionModel().getSelectedItem();
+        int roomid = selectedRoom.getRoomID();
+
         String roomNumber = String.valueOf(t_numRoom.getText());
         String TypeName = (String) c_roo.getValue();
         if (!roomNumber.matches("\\d+")) {
             showErrorMessage("Thất Bại !");
             return;
         }
-        RoomList_DAO.updateRoom( roomNumber, TypeName);
+        RoomList_DAO.updateRoom( roomid,roomNumber, TypeName);
         if (!roomNumber.isEmpty()){
             showSuccessMessage("Thành Công");
         }
@@ -140,14 +137,11 @@ public class RoomsController implements Initializable {
         confirmationAlert.setContentText("Bạn có chắc chắn muốn xóa ?");
         Optional<ButtonType> result = confirmationAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            String roomNumber = String.valueOf(t_numRoom.getText());
-            RoomList_DAO.deleteRoom(roomNumber);
+            Room selectedRoom = tableView.getSelectionModel().getSelectedItem();
+            int roomid = selectedRoom.getRoomID();
+            RoomList_DAO.deleteRoom(roomid);
             show();
         }
-    }
-    @FXML
-    protected void clearButton() {
-        t_numRoom.clear();
     }
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

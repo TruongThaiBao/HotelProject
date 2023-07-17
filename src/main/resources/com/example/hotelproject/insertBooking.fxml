@@ -45,7 +45,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="vbox" prefHeight="439.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.BookingInsertController">
+<VBox fx:id="vbox" prefHeight="439.0" prefWidth="631.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.BookingInsertController">
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
@@ -101,14 +101,15 @@
             <Label layoutX="43.0" layoutY="266.0" text="CHECKOUTDATE" />
             <DatePicker fx:id="b_checkout" layoutX="47.0" layoutY="293.0" prefHeight="35.0" prefWidth="231.0" />
             <Button id="btn" fx:id="insertbtn" layoutX="188.0" layoutY="357.0" mnemonicParsing="false" onAction="#InsertBookingBtn" prefHeight="35.0" prefWidth="231.0" text="THÊM BOOKING" />
-            <Label layoutX="227.0" layoutY="12.0" prefHeight="51.0" prefWidth="178.0" text="THÊM MỚI BOOKING">
+            <Label layoutX="73.0" layoutY="22.0" prefHeight="66.0" prefWidth="178.0" text="THÊM MỚI BOOKING">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label layoutX="177.0" layoutY="75.0" text="Chọn Phòng :" />
-            <ComboBox fx:id="b_roomNumber" layoutX="277.0" layoutY="70.0" prefWidth="150.0" promptText="Select" />
-            <Label fx:id="userIDLabel" layoutX="494.0" layoutY="28.0" text="NHÂN VIÊN" />
+            <Label layoutX="419.0" layoutY="58.0" text="LOẠI PHÒNG" />
+            <ComboBox fx:id="b_roomid" layoutX="419.0" layoutY="75.0" prefWidth="150.0" promptText="Select" />
+            <Label layoutX="423.0" layoutY="14.0" text="NHÂN VIÊN" />
+            <ComboBox fx:id="b_userid" layoutX="419.0" layoutY="32.0" prefWidth="150.0" promptText="Select" />
          </children>
     </AnchorPane>
   </children>

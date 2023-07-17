@@ -3,58 +3,94 @@ package com.example.hotelproject;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ResourceBundle;
+public class BookingInsertController {
+    private RoomBookingController customerController;
 
-public class BookingInsertController implements Initializable {
+    public void setCustomerController(RoomBookingController customerController) {
+        this.customerController = customerController;
+    }
     @FXML
-    private   ComboBox  b_roomNumber ;
+    private   ComboBox<Integer>  b_roomid , b_userid;
     @FXML
-    private TextField   i_fullname , i_number , i_phone;
+    private TextField   i_fullname , i_number , i_phone
+            ;
     @FXML
     private DatePicker  b_checkin, b_checkout ,i_booktime;
     @FXML
-    private Label userIDLabel;
-    private int userId;
-    private int roomID = 0;
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-    public void setUserIDAndInitialize(int userId) {
-        this.userId = userId;
-        initialize(null, null);
-    }
-
-    @FXML
-    protected void InsertBookingBtn(){
-        LocalDate BookingTime = i_booktime.getValue();
-        LocalDate CheckInDate = b_checkin.getValue();
-        LocalDate CheckOutDay = b_checkout.getValue();
-        String FullName = i_fullname.getText();
-        String PhoneNum = i_phone.getText();
-        String IDNum = i_number.getText();
-
-        //Lấy roomID bằng roomNumber
+    public void initialize() {
+        ObservableList<Integer> flag1 = FXCollections.observableArrayList();
+        ObservableList<Integer> flag2 = FXCollections.observableArrayList();
+        ObservableList<Integer> flag3 = FXCollections.observableArrayList();
+        ObservableList<Customer> Cus = FXCollections.observableArrayList();
+        ObservableList<Room> roomlist = FXCollections.observableArrayList();
+        ResultSet resultSet1 = RoomList_DAO.showRooms();
         try {
-            ResultSet resultSet = Room_DAO.getRoomIDByRoomNumber(b_roomNumber.getValue().toString());
-            while (resultSet.next()) {
-                int maPhong = resultSet.getInt("RoomID");
-                roomID = maPhong;
+            while (resultSet1.next()) {
+                int roomID = resultSet1.getInt("RoomID");
+                int roomtypeID = resultSet1.getInt("RoomTypeID");
+                String roomNum = resultSet1.getString("RoomNumber");
+                String roomTypeName = resultSet1.getString("RoomTypeName");
+                boolean status = resultSet1.getBoolean("Status");
+                String roomPrice = resultSet1.getString("BasePrice");
+                Room room = new Room(roomID, roomNum, roomTypeName, roomPrice, roomtypeID);
+                roomlist.add(room);
+                flag1.add(roomID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            ResultSet resultSet2 = RoomBooking_DAO.showCus();
+            while (resultSet2.next()) {
+                int CustomerID = resultSet2.getInt("CustomerID");
+                String FullName = resultSet2.getString("FullName");
+                String IDNumber = resultSet2.getString("IDNumber");
+                String PhoneNumber = resultSet2.getString("PhoneNumber");
+                Boolean Deleted = resultSet2.getBoolean("Deleted");
+                Customer cus = new Customer(CustomerID,FullName,IDNumber,PhoneNumber,Deleted);
+                Cus.add(cus);
+                flag2.add(CustomerID);
             }
         }
         catch (SQLException e){
             throw  new RuntimeException(e);
         }
 
-        //Validation input
-        if (BookingTime == null || CheckInDate == null || CheckOutDay == null || FullName.isEmpty() || PhoneNum.isEmpty() || IDNum.isEmpty() || roomID == 0) {
+        try {
+            ResultSet resultSet = RoomBooking_DAO.showRooms();
+            while (resultSet.next()) {
+                int cbbuser = resultSet.getInt("UserID");
+                flag3.add(cbbuser);
+            }
+            b_roomid.setItems(flag1);
+            b_userid.setItems(flag3);
+        }
+        catch (SQLException e){
+            throw  new RuntimeException(e);
+        }
+    }
+    @FXML
+    protected void InsertBookingBtn(){
+        LocalDate BookingTime = i_booktime.getValue();
+        LocalDate CheckInDate = b_checkin.getValue();
+        LocalDate CheckOutDay = b_checkout.getValue();
+        Integer roomIDValue = b_roomid.getValue();
+        int RoomID = roomIDValue != null ? roomIDValue.intValue() : 0;
+        Integer userIDValue = b_userid.getValue();
+        int UserID = userIDValue != null ? userIDValue.intValue() : 0;
+        String FullName = i_fullname.getText();
+        String PhoneNum = i_phone.getText();
+        String IDNum = i_number.getText();
+        if (BookingTime == null || CheckInDate == null || CheckOutDay == null || FullName.isEmpty() || PhoneNum.isEmpty() || IDNum.isEmpty() || RoomID == 0  || UserID == 0) {
             showErrorMessage("Vui lòng nhập đầy đủ thông tin!");
             return;
         }
@@ -79,12 +115,11 @@ public class BookingInsertController implements Initializable {
             showErrorMessage("Thời Gian CheckOut Không Hợp Lệ!");
             return;
         }
-        showSuccessMessage("Insert Thành Công");
-        RoomBooking_DAO.insertBooking(BookingTime, CheckInDate, CheckOutDay,roomID,userId,FullName,PhoneNum,IDNum);
-        RoomBookingController roomBookingController = new RoomBookingController();
-        roomBookingController.showinl();
-
-        i_booktime.getScene().getWindow().hide();
+            showSuccessMessage("Insert Thành Công");
+            RoomBooking_DAO.insertBooking(BookingTime, CheckInDate, CheckOutDay,RoomID,UserID,FullName,PhoneNum,IDNum);
+        Stage currentStage = (Stage) i_fullname.getScene().getWindow();
+        customerController.updateTableView();
+        currentStage.close();
     }
     private boolean validatePhoneNumber(String phoneNumber) {
         if (phoneNumber.length() != 10) {
@@ -148,71 +183,5 @@ public class BookingInsertController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-    private void showData(){
-        ObservableList flag1 = FXCollections.observableArrayList();
-        ObservableList<Integer> flag2 = FXCollections.observableArrayList();
-        ObservableList<Customer> Cus = FXCollections.observableArrayList();
-        ObservableList<Room> roomlist = FXCollections.observableArrayList();
-        ResultSet resultSet1 = RoomList_DAO.showRooms();
-        try {
-            while (resultSet1.next()) {
-                int roomID = resultSet1.getInt("RoomID");
-                int roomtypeID = resultSet1.getInt("RoomTypeID");
-                String roomNum = resultSet1.getString("RoomNumber");
-                String roomTypeName = resultSet1.getString("RoomTypeName");
-                boolean status = resultSet1.getBoolean("Status");
-                String roomPrice = resultSet1.getString("BasePrice");
-                Room room = new Room(roomID, roomNum, roomTypeName, roomPrice, roomtypeID);
-                roomlist.add(room);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet resultSet2 = RoomBooking_DAO.showCus();
-            while (resultSet2.next()) {
-                int CustomerID = resultSet2.getInt("CustomerID");
-                String FullName = resultSet2.getString("FullName");
-                String IDNumber = resultSet2.getString("IDNumber");
-                String PhoneNumber = resultSet2.getString("PhoneNumber");
-                Boolean Deleted = resultSet2.getBoolean("Deleted");
-                Customer cus = new Customer(CustomerID,FullName,IDNumber,PhoneNumber,Deleted);
-                Cus.add(cus);
-                flag2.add(CustomerID);
-            }
-        }
-        catch (SQLException e){
-            throw  new RuntimeException(e);
-        }
-
-        try {
-            ResultSet resultSet = Room_DAO.read();
-            while (resultSet.next()) {
-                String soPhong = resultSet.getString("RoomNumber");
-                flag1.add(soPhong);
-                b_roomNumber.setItems(flag1);
-            }
-
-        }
-        catch (SQLException e){
-            throw  new RuntimeException(e);
-        }
-
-        //Gọi userID sau khi truyền
-        try {
-            ResultSet resultSet = User_DAO.getNameByUserID(userId);
-            while (resultSet.next()) {
-                String fullName = resultSet.getString("FullName");
-                userIDLabel.setText(fullName);
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    showData();
     }
 }

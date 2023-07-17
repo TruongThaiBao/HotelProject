@@ -62,6 +62,14 @@
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#CustomerButtonOnClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="CUSTOMER">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Times New Roman Bold" size="20.0" />
+               </font>
+            </Button>
             <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onThoatButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="THOÁT">
                <cursor>
                   <Cursor fx:constant="HAND" />

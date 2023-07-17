@@ -196,6 +196,23 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    private void CustomerButtonOnClick() {
+        rightPane.getChildren().clear();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("customerview.fxml"));
+            Parent customer = loader.load();
+
+//            RoomBookingController roomBookingController = loader.getController();
+//            roomBookingController.setUserId(userId);
+//            roomBookingController.setUserIDAndInitialize(userId);
+
+            rightPane.getChildren().setAll(customer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @FXML
     private void onThoatButtonClick() {

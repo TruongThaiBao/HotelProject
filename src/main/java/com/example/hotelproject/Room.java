@@ -7,7 +7,7 @@ public class Room {
     private String roomNumber;
     private int roomTypeID;
     private boolean isDeleted;
-    private boolean status;
+    private boolean Status;
     private  String roomTypeName;
     private  String roomPrice;
     public Room(int roomID,String roomNumber, String roomTypeName, String roomPrice,int roomTypeID) {
@@ -20,13 +20,6 @@ public class Room {
     public Room() {
 
     }
-
-    public Room(int roomID, String roomNumber, boolean status) {
-        this.roomID =roomID;
-        this.roomNumber = roomNumber;
-        this.status = status;
-    }
-
     public String getRoomTypeName() {
         return roomTypeName;
     }
@@ -49,7 +42,7 @@ public class Room {
         this.roomNumber = roomNumber;
         this.roomTypeID = roomTypeID;
         this.isDeleted = isDeleted;
-        this.status = Status;
+        this.Status = Status;
         this.roomTypeName=roomTypeName;
         this.roomPrice=roomPrice;
     }
@@ -88,10 +81,10 @@ public class Room {
     }
 
     public boolean isStatus() {
-        return status;
+        return Status;
     }
     public void setStatus(boolean status) {
-        this.status = status;
+        this.Status = status;
     }
     public IntegerProperty roomIDProperty() {
         return new SimpleIntegerProperty(roomID);
@@ -100,7 +93,7 @@ public class Room {
         return new SimpleStringProperty(roomNumber);
     }
     public BooleanProperty statusProperty() {
-        return new SimpleBooleanProperty(status);
+        return new SimpleBooleanProperty(Status);
     }
     public StringProperty roomTypeNameProperty() {
         return new SimpleStringProperty(roomTypeName);

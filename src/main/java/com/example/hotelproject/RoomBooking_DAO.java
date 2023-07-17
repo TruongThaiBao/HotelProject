@@ -1,5 +1,7 @@
 package com.example.hotelproject;
 
+import com.example.hotelproject.Conect;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

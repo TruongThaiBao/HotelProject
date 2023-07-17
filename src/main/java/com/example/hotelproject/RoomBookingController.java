@@ -9,8 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -48,6 +47,7 @@ public class RoomBookingController implements Initializable {
     private ComboBox comboBox;
     @FXML
     private TextField t_search;
+
     private int userId;
 
     public void setUserId(int userId) {
@@ -89,7 +89,6 @@ public class RoomBookingController implements Initializable {
         CheckOutColumn.setCellValueFactory(new PropertyValueFactory<>("checkOutDate"));
         UserID.setCellValueFactory(new PropertyValueFactory<>("userID"));
         tableView.setItems(roomBookings);
-        tableView.refresh();
     }
     @FXML
     protected void SearchButton() {
@@ -162,10 +161,11 @@ public class RoomBookingController implements Initializable {
             Stage stage = new Stage();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("insertBooking.fxml"));
             Parent root = loader.load();
-            BookingInsertController bookingInsertController = loader.getController();
-            bookingInsertController.setUserId(userId);
-            bookingInsertController.setUserIDAndInitialize(userId);
             Scene scene = new Scene(root);
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            BookingInsertController controller = loader.getController();
+            controller.setCustomerController(this);
             stage.setScene(scene);
             stage.setTitle("Thao Tác");
             stage.show();
@@ -203,7 +203,10 @@ public class RoomBookingController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fixBooking.fxml"));
             Parent root = loader.load();
             Scene scene = new Scene(root);
+            stage.setResizable(false);
+            stage.initModality(Modality.APPLICATION_MODAL);
             BookingFixController controller = loader.getController();
+            controller.setCustomerController(this);
             RoomBooking selected = tableView.getSelectionModel().getSelectedItem();
             RoomBooking selected1 = tableView1.getSelectionModel().getSelectedItem();
             if (selected != null) {
@@ -224,6 +227,9 @@ public class RoomBookingController implements Initializable {
         showinl();
         ObservableList<String> options = FXCollections.observableArrayList("IDNumber", "PhoneNumber", "FullName");
         comboBox.setItems(options);
+    }
+    public void updateTableView() {
+        showinl();
     }
 }
 

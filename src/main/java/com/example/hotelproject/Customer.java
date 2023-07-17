@@ -2,33 +2,65 @@ package com.example.hotelproject;
 
 public class Customer {
     private int customerID;
-    private String fullName;
+    private String FullName;
     private String idNumber;
     private String phoneNumber;
-    private boolean isDeleted;
-
-    public Customer(String fullName, String idNumber, String phoneNumber) {
-        this.customerID = customerID;
-        this.fullName = fullName;
-        this.idNumber = idNumber;
-        this.phoneNumber = phoneNumber;
-        this.isDeleted = isDeleted;
-    }
+    private Boolean Deleted;
+    private int UserID;
+    private int RoomID;
 
     public Customer(int customerID, String fullName, String idNumber, String phoneNumber) {
-        this.customerID =customerID;
-        this.fullName = fullName;
-        this.idNumber = idNumber;
-        this.phoneNumber = phoneNumber;
+        this.customerID=customerID;
+        this.FullName=fullName;
+        this.idNumber=idNumber;
+        this.phoneNumber=phoneNumber;
     }
 
-    public Customer(int customerID, String fullName, String idNumber, String phoneNumber, Boolean deleted) {
-        this.customerID =customerID;
-        this.fullName = fullName;
+    public Customer(String fullName, String idNumber, String phoneNumber) {
+        this.FullName = fullName;
+        this.idNumber =idNumber;
+        this.phoneNumber =  phoneNumber;
+    }
+
+
+    public Boolean getDeleted() {
+        return Deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        Deleted = deleted;
+    }
+
+    public int getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(int userID) {
+        UserID = userID;
+    }
+
+    public int getRoomID() {
+        return RoomID;
+    }
+
+    public void setRoomID(int roomID) {
+        RoomID = roomID;
+    }
+
+    public Customer(int customerID, String FullName, String idNumber, String phoneNumber, Boolean Deleted) {
+        this.customerID = customerID;
+        this.FullName = FullName;
         this.idNumber = idNumber;
         this.phoneNumber = phoneNumber;
-        this.isDeleted = deleted;
+        this.Deleted = Deleted;
     }
+
+    public Customer(int RoomID, String FullName, int UserID) {
+        this.RoomID=RoomID;
+        this.FullName=FullName;
+        this.UserID=UserID;
+    }
+
 
     // Getters and setters
 
@@ -41,11 +73,11 @@ public class Customer {
     }
 
     public String getFullName() {
-        return fullName;
+        return FullName;
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.FullName = fullName;
     }
 
     public String getIdNumber() {
@@ -64,12 +96,5 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
-    }
 }
 

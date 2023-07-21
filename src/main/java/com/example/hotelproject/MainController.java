@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -90,10 +91,10 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void onDatPhongButtonClick() {
+    private void onPhongButtonClick() {
         rightPane.getChildren().clear();
         rightPane.getChildren().add(gridPane);
-        gridPane.setVgap(50);
+        gridPane.setVgap(100);
         gridPane.setHgap(200);
 
         try {
@@ -118,6 +119,7 @@ public class MainController implements Initializable {
                     }
                 });
 
+                GridPane.setHalignment(button, HPos.CENTER);
                 gridPane.add(button, columnIndex, rowIndex);
 
                 columnIndex++;
@@ -148,7 +150,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void onPhongButtonClick() {
+    private void onDanhSachPhongButtonClick() {
         rightPane.getChildren().clear();
         try {
             Parent qlp = FXMLLoader.load(getClass().getResource("ttp.fxml"));
@@ -228,7 +230,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        onDatPhongButtonClick();
+        onPhongButtonClick();
 
         try {
             ResultSet resultSet = User_DAO.getNameByUserID(userId);

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1550.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomPaymentController">
+    <children>
+        <TableView fx:id="paymentTable" layoutX="-3.0" prefHeight="800.0" prefWidth="873.0">
+            <columns>
+                <TableColumn fx:id="colSTT" prefWidth="58.0" text="STT">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="serialNumber" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="colTenMatHang" prefWidth="335.9999694824219" text="Tên mặt hàng">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="itemName" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="colSoLuong" prefWidth="125.0" text="Số lượng">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="quantity" />
+                    </cellValueFactory>
+                </TableColumn>
+            <TableColumn fx:id="colDonGia" prefWidth="131.0" text="Đơn giá">
+               <cellValueFactory>
+                  <PropertyValueFactory property="quantity" />
+               </cellValueFactory>
+            </TableColumn>
+                <TableColumn fx:id="colThanhTien" prefWidth="222.0" text="Thành tiền">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="totalAmount" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+      <Button fx:id="returnMain" layoutX="1268.0" layoutY="736.0" mnemonicParsing="false" onAction="#onTroVeSoDoPhongButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Trở về sơ đồ phòng">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="1268.0" layoutY="628.0" mnemonicParsing="false" prefHeight="91.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="CASH">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="897.0" layoutY="296.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="89.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Lên">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="897.0" layoutY="430.0" mnemonicParsing="false" prefHeight="74.0" prefWidth="89.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Xuống">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="txtThanhTien" alignment="CENTER_RIGHT" layoutX="1218.0" layoutY="22.0" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: white; -fx-border-color: #999999; -fx-border-radius: 5;" text="Label" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtPhuThu" alignment="CENTER_RIGHT" layoutX="1218.0" layoutY="74.0" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: white; -fx-border-color: #999999; -fx-border-radius: 5;" text="Label" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="txtGiamGia" alignment="CENTER_RIGHT" layoutX="1218.0" layoutY="125.0" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: white; -fx-border-color: #999999; -fx-border-radius: 5;" text="Label" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1057.0" layoutY="32.0" prefHeight="17.0" prefWidth="154.0" text="Thành tiền :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1057.0" layoutY="134.0" prefHeight="17.0" prefWidth="154.0" text="Giảm giá :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1057.0" layoutY="84.0" prefHeight="17.0" prefWidth="154.0" text="Phụ thu :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="1268.0" layoutY="273.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Chiết khấu">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Button layoutX="1268.0" layoutY="343.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Phụ thu">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="txtThanhToan" alignment="CENTER_RIGHT" layoutX="1218.0" layoutY="176.0" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: white; -fx-border-color: #999999; -fx-border-radius: 5;" text="Label" textAlignment="CENTER">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="1057.0" layoutY="186.0" prefHeight="17.0" prefWidth="154.0" text="Thanh toán :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Label>
+      <Button layoutX="986.0" layoutY="736.0" mnemonicParsing="false" onAction="#onTroVeTruocButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="Trở về trước">
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font>
+      </Button>
+    </children>
+</AnchorPane>

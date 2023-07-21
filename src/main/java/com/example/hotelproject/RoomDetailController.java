@@ -2,15 +2,19 @@ package com.example.hotelproject;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -46,6 +50,7 @@ public class RoomDetailController implements Initializable {
     private int userId;
     private Item selectedRow;
     private int selectedIndex;
+    private StackPane rightPane;
 
 
     public static class Item {
@@ -99,7 +104,13 @@ public class RoomDetailController implements Initializable {
             this.soLuong = soLuong;
         }
     }
-
+    public void setRightPane(StackPane rightPane) {
+        this.rightPane = rightPane;
+    }
+    public void setRightPaneAndInitialize(int userId) {
+        this.userId = userId;
+        initialize(null, null);
+    }
     public void setUserData(String userData) {
         this.userData = userData;
     }
@@ -131,13 +142,30 @@ public class RoomDetailController implements Initializable {
             e.printStackTrace();
         }
     }
+    private void showErrorMessage(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Lỗi");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @FXML
     private void onThemButtonClick() {
         String tenMatHang = fTenMatHang.getValue();
-        int soLuong = Integer.parseInt(fSoLuong.getText());
+        String soLuongText = fSoLuong.getText();
+
+        if (tenMatHang.isEmpty()) {
+            showErrorMessage("Vui lòng chọn mặt hàng !");
+            return;
+        }
+        if (soLuongText.isEmpty()) {
+            showErrorMessage("Vui lòng nhập số lượng !");
+            return;
+        }
 
         try {
+            int soLuong = Integer.parseInt(soLuongText);
             double donGia = Service_DAO.getDonGiaByTenMatHang(tenMatHang);
             double thanhTien = soLuong * donGia;
 
@@ -147,8 +175,10 @@ public class RoomDetailController implements Initializable {
             fTenMatHang.getSelectionModel().clearSelection();
             fSoLuong.clear();
         } catch (SQLException e) {
-            System.out.println("Failed to fetch data from the database.");
+            System.out.println("Kết nối dữ liệu thất bại");
             e.printStackTrace();
+        } catch (NumberFormatException e) {
+            showErrorMessage("Số lượng phải là số !");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -158,22 +188,6 @@ public class RoomDetailController implements Initializable {
         Item selectedItem = tableViewRoomDetail.getSelectionModel().getSelectedItem();
         if (selectedItem != null) {
             itemList.remove(selectedItem);
-        }
-    }
-    @FXML
-    private void onOrderDetailButtonClick() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("OrderDetail.fxml"));
-            Parent orderDetail = loader.load();
-
-            Stage stage = new Stage();
-            stage.setScene(new Scene(orderDetail));
-            stage.setResizable(false);
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -313,7 +327,7 @@ public class RoomDetailController implements Initializable {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Failed to fetch data from the database.");
+            System.out.println("Kết nối dữ liệu thất bại.");
             e.printStackTrace();
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -364,6 +378,49 @@ public class RoomDetailController implements Initializable {
     private void onXuongButtonClick() {
         selectNextRow();
     }
+
+    @FXML
+    private void onThanhToanButtonClick() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomPaymentView.fxml"));
+            Parent roomPaymentView = loader.load();
+
+            RoomPaymentController roomPaymentController = loader.getController();
+            roomPaymentController.setUserData(userData);
+            roomPaymentController.setDataAndInitialize(userData);
+            roomPaymentController.setUserId(userId);
+            roomPaymentController.setUserIDAndInitialize(userId);
+            // roomPaymentController.setRoomData(itemList, calculateTotalAmount());
+
+            Scene roomPaymentScene = new Scene(roomPaymentView);
+            Stage mainStage = (Stage) roomNumber.getScene().getWindow();
+
+            Stage roomPaymentStage = new Stage();
+
+            roomPaymentStage.initStyle(StageStyle.UNDECORATED); // Để không có thanh tiêu đề và không thể di chuyển
+
+            roomPaymentStage.setWidth(mainStage.getWidth());
+            roomPaymentStage.setHeight(mainStage.getHeight());
+            roomPaymentStage.setX(mainStage.getX());
+            roomPaymentStage.setY(mainStage.getY());
+
+            roomPaymentStage.setResizable(false);
+            roomPaymentStage.initModality(Modality.WINDOW_MODAL);
+            roomPaymentStage.initOwner(mainStage);
+
+            roomPaymentStage.setScene(roomPaymentScene);
+            roomPaymentStage.show();
+
+            // Ẩn cửa sổ chính (Main)
+            // mainStage.hide();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
 
     @Override

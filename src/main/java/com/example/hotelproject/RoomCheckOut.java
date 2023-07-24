@@ -1,22 +1,42 @@
 package com.example.hotelproject;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 public class RoomCheckOut {
     private int checkOutID;
-    private int bookingID;
-    private LocalDateTime checkOutTime;
+    private int roomID;
+    private int checkInID;
+    private Timestamp checkOutTime;
     private boolean isDeleted;
     private int userID;
 
-    public RoomCheckOut(int checkOutID, int bookingID, LocalDateTime checkOutTime, boolean isDeleted) {
+    public RoomCheckOut(){}
+
+    public RoomCheckOut(int checkOutID, int roomID, int checkInID, Timestamp checkOutTime, boolean isDeleted) {
         this.checkOutID = checkOutID;
-        this.bookingID = bookingID;
+        this.checkInID =checkInID;
+        this.roomID = roomID;
         this.checkOutTime = checkOutTime;
         this.isDeleted = isDeleted;
     }
 
     // Getters and setters
+
+    public int getCheckInID() {
+        return checkInID;
+    }
+
+    public void setCheckInID(int checkInID) {
+        this.checkInID = checkInID;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
 
     public int getUserID() {
         return userID;
@@ -34,19 +54,11 @@ public class RoomCheckOut {
         this.checkOutID = checkOutID;
     }
 
-    public int getBookingID() {
-        return bookingID;
-    }
-
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
-    }
-
-    public LocalDateTime getCheckOutTime() {
+    public Timestamp getCheckOutTime() {
         return checkOutTime;
     }
 
-    public void setCheckOutTime(LocalDateTime checkOutTime) {
+    public void setCheckOutTime(Timestamp  checkOutTime) {
         this.checkOutTime = checkOutTime;
     }
 
@@ -57,5 +69,6 @@ public class RoomCheckOut {
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
     }
+
 }
 

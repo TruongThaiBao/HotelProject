@@ -20,10 +20,13 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class RoomDetailController implements Initializable {
     @FXML
@@ -42,15 +45,20 @@ public class RoomDetailController implements Initializable {
     private TableColumn<Item, Double> colDonGia;
     @FXML
     private TableColumn<Item, Double> colThanhTien;
-    private ObservableList<Item> itemList;
     private int roomID;
     private int serviceID;
+    private int checkInID;
     List<Item> newItems = new ArrayList<>();
     private String userData;
     private int userId;
     private Item selectedRow;
     private int selectedIndex;
     private StackPane rightPane;
+    private ObservableList<RoomDetailController.Item> itemList;
+
+    public ObservableList<RoomDetailController.Item> getItemList() {
+        return itemList;
+    }
 
 
     public static class Item {
@@ -59,6 +67,8 @@ public class RoomDetailController implements Initializable {
         private double donGia;
         private double thanhTien;
         private int soLanLuu;
+        private String serialNumber;
+
 
         public Item(String tenMatHang, int soLuong, double donGia, double thanhTien) {
             this.tenMatHang = tenMatHang;
@@ -70,6 +80,29 @@ public class RoomDetailController implements Initializable {
             this.tenMatHang = tenMatHang;
             this.soLuong = soLuong;
             this.donGia = donGia;
+        }
+        public Item(String serialNumber, String tenMatHang, int soLuong, double donGia, double thanhTien) {
+            this.serialNumber = serialNumber;
+            this.tenMatHang = tenMatHang;
+            this.soLuong = soLuong;
+            this.donGia = donGia;
+            this.thanhTien = thanhTien;
+        }
+
+        public Item(String serialNumber, String tenMatHang, int soLuong, double donGia) {
+            this.serialNumber = serialNumber;
+            this.tenMatHang = tenMatHang;
+            this.soLuong = soLuong;
+            this.donGia = donGia;
+        }
+
+
+        public String getSerialNumber() {
+            return serialNumber;
+        }
+
+        public void setSerialNumber(String serialNumber) {
+            this.serialNumber = serialNumber;
         }
 
         public double getDonGia() {
@@ -104,6 +137,7 @@ public class RoomDetailController implements Initializable {
             this.soLuong = soLuong;
         }
     }
+
     public void setRightPane(StackPane rightPane) {
         this.rightPane = rightPane;
     }
@@ -114,16 +148,24 @@ public class RoomDetailController implements Initializable {
     public void setUserData(String userData) {
         this.userData = userData;
     }
-
+//    public void setCheckInID(int checkInID) {
+//        this.checkInID = checkInID;
+//    }
+//    public void setCheckInIDAndInitialize(int checkInID) {
+//        this.checkInID = checkInID;
+//        initialize(null, null);
+//    }
     public void setDataAndInitialize(String userData) {
         this.userData = userData;
         initialize(null, null);
     }
-    public void setUserId(int userId) {
+    public void setTransData(int userId, int checkInID) {
         this.userId = userId;
+        this.checkInID = checkInID;
     }
-    public void setUserIDAndInitialize(int userId) {
+    public void setTransDataAndInitialize(int userId, int checkInID) {
         this.userId = userId;
+        this.checkInID = checkInID;
         initialize(null, null);
     }
     private void switchToMainScreen() {
@@ -132,7 +174,12 @@ public class RoomDetailController implements Initializable {
             Parent root = loader.load();
 
             MainController mainController = loader.getController();
-            mainController.initializeWithData(userId);
+            mainController.initializeWithData(userId, checkInID);
+//            mainController.setCheckInID(checkInID);
+//            mainController.setCheckInIDAndInitialize(checkInID);
+
+//            System.out.println("roomdetail, trước khi qua main " +checkInID);
+
 
             Scene scene = new Scene(root);
             Stage stage = (Stage) roomNumber.getScene().getWindow();
@@ -220,7 +267,6 @@ public class RoomDetailController implements Initializable {
             RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
             System.out.println("test" +userId);
             RoomService_DAO.saveRoomService(roomService);
-
         }
 
         // Xóa dữ liệu cũ trong cơ sở dữ liệu
@@ -237,10 +283,11 @@ public class RoomDetailController implements Initializable {
             RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
             RoomService_DAO.saveRoomService(roomService);
         }
-        Room_DAO.updateRoomStatus(roomID, 1);
+
         loadRoomData();
         switchToMainScreen();
     }
+
 
     public void showDataRoomDetail(){
         // Truyền số phòng
@@ -287,20 +334,9 @@ public class RoomDetailController implements Initializable {
         colSoLuong.setStyle("-fx-alignment: CENTER-RIGHT;");
         colDonGia.setStyle("-fx-alignment: CENTER-RIGHT;");
         colThanhTien.setStyle("-fx-alignment: CENTER-RIGHT;");
-    }
 
-    public void checkRoomStatus(){
-        try {
-            ResultSet resultSet = Room_DAO.showRoomInformationWithRoomID(userData);
-            if (resultSet.next()) {
-                int stt = resultSet.getInt("Status");
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch data from the database.");
-            e.printStackTrace();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        itemList = FXCollections.observableArrayList();
+        tableViewRoomDetail.setItems(itemList);
     }
 
     private void loadRoomData() {
@@ -339,9 +375,13 @@ public class RoomDetailController implements Initializable {
             totalAmount += item.getThanhTien();
         }
 
-        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-        return decimalFormat.format(totalAmount);
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+        String formattedTotalAmount = decimalFormat.format(totalAmount);
+
+        return formattedTotalAmount;
     }
+
+
 
     //Button lên/xuoonsg
     private void selectNextRow() {
@@ -381,45 +421,76 @@ public class RoomDetailController implements Initializable {
 
     @FXML
     private void onThanhToanButtonClick() {
+
         try {
+            RoomCheckOut roomCheckOut = new RoomCheckOut();
+            RoomCheckOut_DAO.createRoomCheckOut(roomCheckOut, checkInID, userId, roomID);
+
+            //Tính số ngày qua đêm và truyền qua paymentTable
+            int soDem = (int) tinhSoDem(checkInID);
+            //Lấy đơn giá phòng
+            double donGiaPhong = RoomType_DAO.getBasePriceByRoomID(roomID);
+            //Tiền phòng
+            double tienPhong = soDem * donGiaPhong;
+
+            RoomDetailController.Item newItem = new RoomDetailController.Item("Số đêm", soDem, donGiaPhong, tienPhong);
+            itemList.add(newItem);
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomPaymentView.fxml"));
             Parent roomPaymentView = loader.load();
 
+            Scene currentScene = roomNumber.getScene();
             RoomPaymentController roomPaymentController = loader.getController();
-            roomPaymentController.setUserData(userData);
-            roomPaymentController.setDataAndInitialize(userData);
-            roomPaymentController.setUserId(userId);
-            roomPaymentController.setUserIDAndInitialize(userId);
-            // roomPaymentController.setRoomData(itemList, calculateTotalAmount());
+            roomPaymentController.setTransData(userId, checkInID, userData, currentScene);
+            roomPaymentController.setTransDataAndInitialize(userId, checkInID, userData, currentScene);
+            roomPaymentController.setRoomData(itemList, calculateTotalAmount());
 
-            Scene roomPaymentScene = new Scene(roomPaymentView);
-            Stage mainStage = (Stage) roomNumber.getScene().getWindow();
-
-            Stage roomPaymentStage = new Stage();
-
-            roomPaymentStage.initStyle(StageStyle.UNDECORATED); // Để không có thanh tiêu đề và không thể di chuyển
-
-            roomPaymentStage.setWidth(mainStage.getWidth());
-            roomPaymentStage.setHeight(mainStage.getHeight());
-            roomPaymentStage.setX(mainStage.getX());
-            roomPaymentStage.setY(mainStage.getY());
-
-            roomPaymentStage.setResizable(false);
-            roomPaymentStage.initModality(Modality.WINDOW_MODAL);
-            roomPaymentStage.initOwner(mainStage);
-
-            roomPaymentStage.setScene(roomPaymentScene);
-            roomPaymentStage.show();
-
+            currentScene.setRoot(roomPaymentView);
             // Ẩn cửa sổ chính (Main)
             // mainStage.hide();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    public static long tinhSoDem(int checkInID) {
+        String checkInTime = RoomCheckIn_DAO.showCheckInInformationWithID(checkInID);
+        String checkOutTime = RoomCheckOut_DAO.showCheckOutInformationWithID(checkInID);
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        try {
+            Date startDate = dateFormat.parse(checkInTime);
+            Date endDate = dateFormat.parse(checkOutTime);
+
+            Calendar calStart = Calendar.getInstance();
+            calStart.setTime(startDate);
+            calStart.set(Calendar.HOUR_OF_DAY, 0);
+            calStart.set(Calendar.MINUTE, 0);
+            calStart.set(Calendar.SECOND, 0);
+            calStart.set(Calendar.MILLISECOND, 0);
+
+            Calendar calEnd = Calendar.getInstance();
+            calEnd.setTime(endDate);
+            calEnd.set(Calendar.HOUR_OF_DAY, 0);
+            calEnd.set(Calendar.MINUTE, 0);
+            calEnd.set(Calendar.SECOND, 0);
+            calEnd.set(Calendar.MILLISECOND, 0);
+
+            if (calEnd.before(calStart) || calEnd.equals(calStart)) {
+                return 1;
+            } else {
+                long timeDifference = calEnd.getTimeInMillis() - calStart.getTimeInMillis();
+                long numberOfNights = timeDifference / 86400000;
+                return numberOfNights;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 
 
 
@@ -432,5 +503,8 @@ public class RoomDetailController implements Initializable {
 
         selectedRow = null;
         selectedIndex = -1;
+
+        System.out.println("Initialize RoomDetail \nUser " +userId+"\nCheckInID " +checkInID +"\nUserData " +userData);
+
     }
 }

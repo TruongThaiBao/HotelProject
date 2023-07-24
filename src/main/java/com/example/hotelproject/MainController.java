@@ -34,6 +34,14 @@ public class MainController implements Initializable {
     private Label fullNameLabel, sysTime;
     private GridPane gridPane = new GridPane();
     private int userId;
+    private int checkInID;
+    public void setCheckInID(int checkInID) {
+        this.checkInID = checkInID;
+    }
+    public void setCheckInIDAndInitialize(int checkInID) {
+        this.checkInID = checkInID;
+        initialize(null, null);
+    }
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -41,9 +49,11 @@ public class MainController implements Initializable {
         this.userId = userId;
         initialize(null, null);
     }
-    public void initializeWithData(int userId) {
+    public void initializeWithData(int userId, int checkInID) {
         setUserId(userId);
         setUserIDAndInitialize(userId);
+        setCheckInID(checkInID);
+        setCheckInIDAndInitialize(checkInID);
     }
     private void updateSysTime() {
         LocalDateTime now = LocalDateTime.now();
@@ -81,8 +91,8 @@ public class MainController implements Initializable {
             RoomDetailController roomDetailController = loader.getController();
             roomDetailController.setUserData(userData);
             roomDetailController.setDataAndInitialize(userData);
-            roomDetailController.setUserId(userId);
-            roomDetailController.setUserIDAndInitialize(userId);
+            roomDetailController.setTransData(userId, checkInID);
+            roomDetailController.setTransDataAndInitialize(userId, checkInID);
 
             rightPane.getChildren().setAll(roomDetail);
         } catch (IOException e) {
@@ -112,7 +122,8 @@ public class MainController implements Initializable {
                 button.setOnAction(event -> {
                     System.out.println("Đã nhấn vào phòng: " + tenPhong);
                     System.out.println(id);
-                    if (status == 1) {
+                    if (status != 0) {
+                        checkInID = status;
                         openRoomDetail(id);
                     } else {
                         openRoom(id);
@@ -250,5 +261,7 @@ public class MainController implements Initializable {
             }
         };
         timer.start();
+
+        System.out.println("trở về main với check in ID " + checkInID );
     }
 }

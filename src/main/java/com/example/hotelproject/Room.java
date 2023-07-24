@@ -7,7 +7,7 @@ public class Room {
     private String roomNumber;
     private int roomTypeID;
     private boolean isDeleted;
-    private boolean Status;
+    private int Status;
     private  String roomTypeName;
     private  String roomPrice;
     public Room(int roomID,String roomNumber, String roomTypeName, String roomPrice,int roomTypeID) {
@@ -37,7 +37,7 @@ public class Room {
     }
 
     // Constructor
-    public Room(int roomID, String roomNumber, int roomTypeID, boolean isDeleted, boolean Status , String roomTypeName , String roomPrice) {
+    public Room(int roomID, String roomNumber, int roomTypeID, boolean isDeleted, int Status , String roomTypeName , String roomPrice) {
         this.roomID = roomID;
         this.roomNumber = roomNumber;
         this.roomTypeID = roomTypeID;
@@ -80,10 +80,10 @@ public class Room {
         isDeleted = deleted;
     }
 
-    public boolean isStatus() {
+    public int getStatus() {
         return Status;
     }
-    public void setStatus(boolean status) {
+    public void setStatus(int status) {
         this.Status = status;
     }
     public IntegerProperty roomIDProperty() {
@@ -91,9 +91,6 @@ public class Room {
     }
     public StringProperty roomNumberProperty() {
         return new SimpleStringProperty(roomNumber);
-    }
-    public BooleanProperty statusProperty() {
-        return new SimpleBooleanProperty(Status);
     }
     public StringProperty roomTypeNameProperty() {
         return new SimpleStringProperty(roomTypeName);

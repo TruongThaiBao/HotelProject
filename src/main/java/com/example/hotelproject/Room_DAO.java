@@ -68,11 +68,12 @@ public class Room_DAO {
         return rs;
     }
 
-    public static void createCustomer_CheckIn(Customer customer, RoomCheckIn roomCheckIn) throws SQLException {
+    public static int createCustomer_CheckIn(Customer customer, RoomCheckIn roomCheckIn) throws SQLException {
         Connection connection = null;
         PreparedStatement statement1 = null;
         PreparedStatement statement2 = null;
         ResultSet generatedKeys = null;
+        int checkInID = 0;
 
         try {
             connection = Conect.getInstance();
@@ -91,22 +92,30 @@ public class Room_DAO {
             }
 
             String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, BookingID, NOP, UserID) VALUES (?, ?, ?, ?, ?)";
-            statement2 = connection.prepareStatement(query2);
+            statement2 = connection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
             statement2.setInt(1, roomCheckIn.getRoomID());
             statement2.setInt(2, customerID);
             statement2.setInt(3, roomCheckIn.getBookingID());
             statement2.setInt(4, roomCheckIn.getNop());
             statement2.setInt(5,roomCheckIn.getUserID());
             statement2.executeUpdate();
+
+            generatedKeys = statement2.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                checkInID = generatedKeys.getInt(1);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return checkInID;
     }
-    public static void createCustomer_CheckIn_NotBooking(Customer customer, RoomCheckIn roomCheckIn) throws SQLException {
+    public static int createCustomer_CheckIn_NotBooking(Customer customer, RoomCheckIn roomCheckIn) throws SQLException {
         Connection connection = null;
         PreparedStatement statement1 = null;
         PreparedStatement statement2 = null;
-        ResultSet generatedKeys = null;
+        ResultSet generatedKeys1 = null;
+        ResultSet generatedKeys2 = null;
+        int checkInID = 0;
 
         try {
             connection = Conect.getInstance();
@@ -118,22 +127,28 @@ public class Room_DAO {
             statement1.setString(3, customer.getPhoneNumber());
             statement1.executeUpdate();
 
-            generatedKeys = statement1.getGeneratedKeys();
+            generatedKeys1 = statement1.getGeneratedKeys();
             int customerID = 0;
-            if (generatedKeys.next()) {
-                customerID = generatedKeys.getInt(1);
+            if (generatedKeys1.next()) {
+                customerID = generatedKeys1.getInt(1);
             }
 
             String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, NOP, UserID) VALUES ( ?, ?, ?, ?)";
-            statement2 = connection.prepareStatement(query2);
+            statement2 = connection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
             statement2.setInt(1, roomCheckIn.getRoomID());
             statement2.setInt(2, customerID);
             statement2.setInt(3, roomCheckIn.getNop());
             statement2.setInt(4, roomCheckIn.getUserID());
             statement2.executeUpdate();
+
+            generatedKeys2 = statement2.getGeneratedKeys();
+            if (generatedKeys2.next()) {
+                checkInID = generatedKeys2.getInt(1);
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return checkInID;
     }
     public static void updateRoomStatus(int roomID, int status) {
         Connection connection = null;
@@ -216,5 +231,6 @@ public class Room_DAO {
 
         return customer;
     }
+
 
 }

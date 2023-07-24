@@ -84,4 +84,9 @@ public class LoginController {
             }
         }
     }
+    @FXML
+    private void onExitButtonClick(){
+        Stage stage = (Stage) txtUsername.getScene().getWindow();
+        stage.close();
+    }
 }

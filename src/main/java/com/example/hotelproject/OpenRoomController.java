@@ -32,6 +32,7 @@ public class OpenRoomController implements Initializable {
     private StackPane rightPane;
     private int roomID;
     private int userId;
+    private int checkInID;
 
     public void setRightPane(StackPane rightPane) {
         this.rightPane = rightPane;
@@ -78,10 +79,10 @@ public class OpenRoomController implements Initializable {
             if (!fKhachVangLai.isSelected()) {
                 int bookingID = Integer.parseInt(fbookingID.getText());
                 RoomCheckIn roomCheckIn = new RoomCheckIn(roomID, bookingID, nop, userId);
-                Room_DAO.createCustomer_CheckIn(customer, roomCheckIn);
+                checkInID = Room_DAO.createCustomer_CheckIn(customer, roomCheckIn);
             } else {
                 RoomCheckIn roomCheckIn = new RoomCheckIn(roomID, nop, userId);
-                Room_DAO.createCustomer_CheckIn_NotBooking(customer, roomCheckIn);
+                checkInID = Room_DAO.createCustomer_CheckIn_NotBooking(customer, roomCheckIn);
             }
 
 //            Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -98,8 +99,11 @@ public class OpenRoomController implements Initializable {
                 RoomDetailController roomDetailController = loader.getController();
                 roomDetailController.setUserData(userData);
                 roomDetailController.setDataAndInitialize(userData);
-                roomDetailController.setUserId(userId);
-                roomDetailController.setUserIDAndInitialize(userId);
+                roomDetailController.setTransData(userId, checkInID);
+                roomDetailController.setTransDataAndInitialize(userId, checkInID);
+                System.out.println("OpenRoom " + checkInID);
+//                roomDetailController.setCheckInID(checkInID);
+//                roomDetailController.setCheckInIDAndInitialize(checkInID);
 
                 rightPane.getChildren().setAll(roomDetail);
             } catch (IOException e) {
@@ -108,7 +112,7 @@ public class OpenRoomController implements Initializable {
         } catch (SQLException e) {
 
         }
-
+        Room_DAO.updateRoomStatus(roomID, checkInID);
     }
 
     @Override
@@ -134,5 +138,6 @@ public class OpenRoomController implements Initializable {
         String formattedDateTime = now.format(formatter);
         timeField.setText(formattedDateTime);
 
+        System.out.println("openrooom" + checkInID);
     }
 }

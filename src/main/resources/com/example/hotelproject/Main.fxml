@@ -14,7 +14,7 @@
    <left>
       <VBox prefHeight="1047.0" prefWidth="260.0" style="-fx-border-color: #5469c6; -fx-border-width: 0 2 0 0;" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#onPhongButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="PHÒNG">
+            <Button mnemonicParsing="false" onAction="#onPhongButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-background-color: linear-gradient(to bottom, #C6DEFF, #FFFFFF, #C6DEFF,  #C6DEFF); -fx-border-color: #B4CFEC;" text="SƠ ĐỒ PHÒNG">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -108,7 +108,7 @@
                   <Font name="Times New Roman Bold" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="sysTime" alignment="CENTER_RIGHT" layoutX="1170.0" layoutY="15.0" prefHeight="24.0" prefWidth="254.0" text="Ngày giờ " textAlignment="CENTER">
+            <Label fx:id="sysTime" alignment="CENTER_RIGHT" layoutX="1282.0" layoutY="13.0" prefHeight="24.0" prefWidth="254.0" text="Ngày giờ " textAlignment="CENTER">
                <font>
                   <Font name="Times New Roman Bold" size="18.0" />
                </font>

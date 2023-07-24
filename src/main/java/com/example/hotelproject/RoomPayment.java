@@ -2,31 +2,27 @@ package com.example.hotelproject;
 
 public class RoomPayment {
     private int paymentID;
-    private int bookingID;
+    private int customerID;
+    private int roomID;
+    private int checkInID;
+    private int checkOutID;
     private double roomCharge;
-    private double serviceCharge;
     private Double extraCharge;
     private Double discount;
-    private boolean isDeleted;
     private int userID;
+    private boolean isDeleted;
 
-    // Constructor
-    public RoomPayment(int paymentID, int bookingID, double roomCharge, double serviceCharge, Double extraCharge, Double discount, boolean isDeleted) {
+    public RoomPayment(int paymentID, int customerID, int roomID, int checkInID, int checkOutID, double roomCharge, Double extraCharge, Double discount, int userID, boolean isDeleted) {
         this.paymentID = paymentID;
-        this.bookingID = bookingID;
+        this.customerID = customerID;
+        this.roomID = roomID;
+        this.checkInID = checkInID;
+        this.checkOutID = checkOutID;
         this.roomCharge = roomCharge;
-        this.serviceCharge = serviceCharge;
         this.extraCharge = extraCharge;
         this.discount = discount;
-        this.isDeleted = isDeleted;
-    }
-
-    public int getUserID() {
-        return userID;
-    }
-
-    public void setUserID(int userID) {
         this.userID = userID;
+        this.isDeleted = isDeleted;
     }
 
     public int getPaymentID() {
@@ -37,12 +33,36 @@ public class RoomPayment {
         this.paymentID = paymentID;
     }
 
-    public int getBookingID() {
-        return bookingID;
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public void setBookingID(int bookingID) {
-        this.bookingID = bookingID;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
+
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public void setRoomID(int roomID) {
+        this.roomID = roomID;
+    }
+
+    public int getCheckInID() {
+        return checkInID;
+    }
+
+    public void setCheckInID(int checkInID) {
+        this.checkInID = checkInID;
+    }
+
+    public int getCheckOutID() {
+        return checkOutID;
+    }
+
+    public void setCheckOutID(int checkOutID) {
+        this.checkOutID = checkOutID;
     }
 
     public double getRoomCharge() {
@@ -51,14 +71,6 @@ public class RoomPayment {
 
     public void setRoomCharge(double roomCharge) {
         this.roomCharge = roomCharge;
-    }
-
-    public double getServiceCharge() {
-        return serviceCharge;
-    }
-
-    public void setServiceCharge(double serviceCharge) {
-        this.serviceCharge = serviceCharge;
     }
 
     public Double getExtraCharge() {
@@ -75,6 +87,14 @@ public class RoomPayment {
 
     public void setDiscount(Double discount) {
         this.discount = discount;
+    }
+
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public boolean isDeleted() {

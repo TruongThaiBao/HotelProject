@@ -1,5 +1,7 @@
 package com.example.hotelproject;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.BaseFont;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,11 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
@@ -31,6 +28,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.*;
+import java.util.List;
 
 public class RoomPaymentController implements Initializable {
     private String userData;
@@ -173,15 +171,13 @@ public class RoomPaymentController implements Initializable {
         paymentTable.setItems(paymentItemList);
     }
 
-
-
     private void switchToMainScreen() {
         try {
             Scene currentScene = returnMain.getScene();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
             Parent root = loader.load();
             currentScene.setRoot(root);
-
+            checkInID =0;
             MainController mainController = loader.getController();
             mainController.initializeWithData(userId, checkInID);
 
@@ -292,11 +288,17 @@ public class RoomPaymentController implements Initializable {
         try {
             // Tạo đối tượng Document với kích thước khổ giấy A5
             Document document = new Document(PageSize.A5);
+
+            // Sử dụng font chữ tiếng Việt (times.ttf) từ file
+            BaseFont bf = BaseFont.createFont("src/main/resources/arial-unicode-ms.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font vietnameseFont = new Font(bf, 12, Font.NORMAL, BaseColor.BLACK);
+
+            // Ghi dữ liệu vào tài liệu PDF
             PdfWriter.getInstance(document, new FileOutputStream("payment_data.pdf"));
             document.open();
 
             // Tiêu đề của bảng
-            Paragraph title = new Paragraph("Dữ liệu thanh toán phòng");
+            Paragraph title = new Paragraph("Dữ liệu thanh toán phòng", vietnameseFont);
             title.setAlignment(Element.ALIGN_CENTER);
             document.add(title);
 
@@ -307,17 +309,24 @@ public class RoomPaymentController implements Initializable {
             table.setSpacingAfter(10f);
 
             // Đặt các tiêu đề cột cho bảng
-            table.addCell("Tên Mặt Hàng");
-            table.addCell("Số Lượng");
-            table.addCell("Đơn Giá");
-            table.addCell("Thành Tiền");
+            PdfPCell cell = new PdfPCell(new Phrase("Tên Mặt Hàng", vietnameseFont));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Số Lượng", vietnameseFont));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Đơn Giá", vietnameseFont));
+            table.addCell(cell);
+            cell = new PdfPCell(new Phrase("Thành Tiền", vietnameseFont));
+            table.addCell(cell);
 
             // Lặp qua các dòng trong TableView và thêm dữ liệu vào bảng
-            for (RoomDetailController.Item item : itemList) {
-                table.addCell(item.getTenMatHang());
-                table.addCell(String.valueOf(item.getSoLuong()));
-                table.addCell(String.valueOf(item.getDonGia()));
-                table.addCell(String.valueOf(item.getThanhTien()));
+            for (Object obj : paymentTable.getItems()) {
+                if (obj instanceof ItemPayment) {
+                    ItemPayment item = (ItemPayment) obj;
+                    table.addCell(new Phrase(item.getTenMatHang(), vietnameseFont));
+                    table.addCell(new Phrase(String.valueOf(item.getTongSoLuong()), vietnameseFont));
+                    table.addCell(new Phrase(String.valueOf(item.getDonGia()), vietnameseFont));
+                    table.addCell(new Phrase(String.valueOf(item.getThanhTien()), vietnameseFont));
+                }
             }
 
             // Thêm bảng vào document
@@ -327,8 +336,11 @@ public class RoomPaymentController implements Initializable {
             System.out.println("Xuất dữ liệu thành công vào file payment_data.pdf");
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
+
     public double convertAmount(String inputAmount) {
         String formattedString = inputAmount.replace(".", "");
 
@@ -367,6 +379,7 @@ public class RoomPaymentController implements Initializable {
         double discount = convertAmount(txtGiamGia.getText());
 
         RoomPayment_DAO.createRoomPayment(customerID, roomID, checkInID, checkOutID, roomCharge, extraCharge, discount, userId);
+        onExportPDFButtonClick();
         Room_DAO.updateRoomStatus(roomID, 0);
         switchToMainScreen();
     }

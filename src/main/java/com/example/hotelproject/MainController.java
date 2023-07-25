@@ -183,10 +183,10 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void onThongKeButtonClick() {
+    private void onBaoCaoButtonClick() {
         rightPane.getChildren().clear();
         try {
-            Parent thongKeView = FXMLLoader.load(getClass().getResource("ThongKeView.fxml"));
+            Parent thongKeView = FXMLLoader.load(getClass().getResource("BaoCaoView.fxml"));
             rightPane.getChildren().setAll(thongKeView);
         } catch (IOException e) {
             e.printStackTrace();

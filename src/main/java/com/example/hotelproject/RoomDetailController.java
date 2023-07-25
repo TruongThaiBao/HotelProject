@@ -221,6 +221,8 @@ public class RoomDetailController implements Initializable {
 
             fTenMatHang.getSelectionModel().clearSelection();
             fSoLuong.clear();
+            String totalAmount = calculateTotalAmount();
+            tongTienLabel.setText(String.valueOf(totalAmount)+"   VND");
         } catch (SQLException e) {
             System.out.println("Kết nối dữ liệu thất bại");
             e.printStackTrace();
@@ -264,7 +266,7 @@ public class RoomDetailController implements Initializable {
             double donGia = newItem.getDonGia();
 
             // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
+            RoomService roomService = new RoomService(roomID,checkInID, serviceID, soLuong, donGia, userId);
             System.out.println("test" +userId);
             RoomService_DAO.saveRoomService(roomService);
         }
@@ -280,7 +282,7 @@ public class RoomDetailController implements Initializable {
             double donGia = item.getDonGia();
 
             // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-            RoomService roomService = new RoomService(roomID, serviceID, soLuong, donGia, userId);
+            RoomService roomService = new RoomService(roomID,checkInID, serviceID, soLuong, donGia, userId);
             RoomService_DAO.saveRoomService(roomService);
         }
 
@@ -351,7 +353,7 @@ public class RoomDetailController implements Initializable {
 
                 // Hiển thị thông tin mặt hàng đã lưu
                 itemList.clear();
-                ResultSet roomServiceResultSet = RoomService_DAO.getRoomServicesByRoomID(roomID);
+                ResultSet roomServiceResultSet = RoomService_DAO.getRoomServicesByRoomIDAndCheckInID(roomID,checkInID);
                 while (roomServiceResultSet.next()) {
                     String serviceIDD = roomServiceResultSet.getString("ServiceID");//
                     String serviceNameResultSet = Service_DAO.getTenMatHangByID(serviceIDD);

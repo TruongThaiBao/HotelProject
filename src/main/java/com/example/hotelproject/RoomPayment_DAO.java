@@ -16,7 +16,6 @@ public class RoomPayment_DAO {
         }
         return rs;
     }
-
     public static void createRoomPayment(int customerID, int roomID, int checkInID, int checkOutID, double roomCharge,
                                          double extraCharge, double discount, int userID) {
         String sql = "INSERT INTO RoomPayments (CustomerID, RoomID, CheckInID, CheckOutID, RoomCharge, ExtraCharge, Discount, UserID) " +
@@ -38,5 +37,20 @@ public class RoomPayment_DAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static ResultSet showRoomPaymentInformationWithID(int paymentID) {
+        ResultSet rs;
+        PreparedStatement stmt = null;
+        try {
+            String sql = "SELECT * FROM RoomPayments WHERE PaymentID = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, paymentID);
+
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rs;
     }
 }

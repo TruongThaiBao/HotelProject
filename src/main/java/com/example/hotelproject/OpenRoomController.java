@@ -85,12 +85,6 @@ public class OpenRoomController implements Initializable {
                 checkInID = Room_DAO.createCustomer_CheckIn_NotBooking(customer, roomCheckIn);
             }
 
-//            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//            alert.setTitle("Success");
-//            alert.setHeaderText(null);
-//            alert.setContentText("Data saved successfully!");
-//            alert.showAndWait();
-
             roomPrice.getScene().getWindow().hide();
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomDetailView.fxml"));
@@ -133,10 +127,10 @@ public class OpenRoomController implements Initializable {
         }
 
         //Ngày giờ hiện tại
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime now = LocalDateTime.now();
-        String formattedDateTime = now.format(formatter);
-        timeField.setText(formattedDateTime);
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        LocalDateTime now = LocalDateTime.now();
+//        String formattedDateTime = now.format(formatter);
+//        timeField.setText(formattedDateTime);
 
         System.out.println("openrooom" + checkInID);
     }

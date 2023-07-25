@@ -25,14 +25,15 @@ public class RoomService_DAO {
         try {
             connection = Conect.getInstance();
 
-            String query = "INSERT INTO RoomServices (RoomID, ServiceID, Quantity, ServicePrice, UserID) VALUES (?, ?, ?, ?, ?)";
+            String query = "INSERT INTO RoomServices (RoomID, CheckInID, ServiceID, Quantity, ServicePrice, UserID) VALUES (?, ?, ?, ?, ?, ?)";
             statement = connection.prepareStatement(query);
 
             statement.setInt(1, roomService.getRoomID());
-            statement.setInt(2, roomService.getServiceID());
-            statement.setInt(3, roomService.getQuantity());
-            statement.setDouble(4, roomService.getServicePrice());
-            statement.setInt(5,roomService.getUserID());
+            statement.setInt(2, roomService.getCheckInID());
+            statement.setInt(3, roomService.getServiceID());
+            statement.setInt(4, roomService.getQuantity());
+            statement.setDouble(5, roomService.getServicePrice());
+            statement.setInt(6,roomService.getUserID());
 //            statement.setInt(5, roomService.getTimes());
             statement.executeUpdate();
 
@@ -82,16 +83,17 @@ public class RoomService_DAO {
         return false;
     }
 
-    public static ResultSet getRoomServicesByRoomID(int roomID) throws SQLException {
+    public static ResultSet getRoomServicesByRoomIDAndCheckInID(int roomID, int checkInID) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
 
         try {
             connection = Conect.getInstance();
-            String query = "SELECT * FROM RoomServices WHERE RoomID = ?";
+            String query = "SELECT * FROM RoomServices WHERE RoomID = ? AND CheckInID = ?";
             statement = connection.prepareStatement(query);
             statement.setInt(1, roomID);
+            statement.setInt(2, checkInID);
             resultSet = statement.executeQuery();
 
             return resultSet;

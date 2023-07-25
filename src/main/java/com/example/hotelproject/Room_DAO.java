@@ -133,7 +133,7 @@ public class Room_DAO {
                 customerID = generatedKeys1.getInt(1);
             }
 
-            String query2 = "INSERT INTO RoomCheckIns (RoomID, CustomerID, NOP, UserID) VALUES ( ?, ?, ?, ?)";
+            String query2 = "INSERT INTO RoomCheckIns (CheckInID, RoomID, CustomerID, NOP, UserID) VALUES (DEFAULT, ?, ?, ?, ?)";
             statement2 = connection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS);
             statement2.setInt(1, roomCheckIn.getRoomID());
             statement2.setInt(2, customerID);
@@ -205,31 +205,24 @@ public class Room_DAO {
 
         return roomCheckIn;
     }
-    public static Customer getCustomerByCustomerID(int customerID) throws SQLException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        Customer customer = null;
-
+    public static String getRoomNumberByRoomID(int roomID) {
+        String roomNumber = null;
+        ResultSet rs = null;
+        PreparedStatement stmt = null;
         try {
-            connection = Conect.getInstance();
-            String query = "SELECT * FROM Customers WHERE CustomerID = ?";
-            statement = connection.prepareStatement(query);
-            statement.setInt(1, customerID);
-            resultSet = statement.executeQuery();
+            String sql = "SELECT RoomNumber FROM Rooms WHERE RoomID = ?";
+            stmt = connection.prepareStatement(sql);
+            stmt.setInt(1, roomID);
 
-            if (resultSet.next()) {
-                String fullName = resultSet.getString("FullName");
-                String idNumber = resultSet.getString("IDNumber");
-                String phoneNumber = resultSet.getString("PhoneNumber");
+            rs = stmt.executeQuery();
 
-                customer = new Customer(customerID, fullName, idNumber, phoneNumber);
+            if (rs.next()) {
+                roomNumber = rs.getString("RoomNumber");
             }
         } catch (SQLException e) {
-            throw new SQLException("Failed to fetch customer data from the database.", e);
+            throw new RuntimeException(e);
         }
-
-        return customer;
+        return roomNumber;
     }
 
 

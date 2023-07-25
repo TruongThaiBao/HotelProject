@@ -11,6 +11,7 @@ public class RoomPayment {
     private Double discount;
     private int userID;
     private boolean isDeleted;
+    private int status;
 
     public RoomPayment(int paymentID, int customerID, int roomID, int checkInID, int checkOutID, double roomCharge, Double extraCharge, Double discount, int userID, boolean isDeleted) {
         this.paymentID = paymentID;
@@ -23,6 +24,14 @@ public class RoomPayment {
         this.discount = discount;
         this.userID = userID;
         this.isDeleted = isDeleted;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public int getPaymentID() {

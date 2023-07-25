@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="750.0" prefWidth="1290.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomDetailController">
+<AnchorPane prefHeight="750.0" prefWidth="1290.0" styleClass="color-background" stylesheets="@CSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomDetailController">
          <children>
             <Label fx:id="tongTienLabel" layoutX="387.0" layoutY="700.0" prefHeight="36.0" prefWidth="284.0" text="Total">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Times New Roman Bold" size="24.0" />
                </font>
             </Label>
             <Label layoutX="122.0" layoutY="275.0" prefHeight="54.0" prefWidth="146.0">
@@ -22,7 +22,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TableView fx:id="tableViewRoomDetail" prefHeight="682.0" prefWidth="671.0">
+            <TableView fx:id="tableViewRoomDetail" prefHeight="682.0" prefWidth="671.0" stylesheets="@CSS.css">
                <columns>
                   <TableColumn fx:id="colTenMatHang" prefWidth="276.0" text="Tên mặt hàng" />
                   <TableColumn fx:id="colSoLuong" prefWidth="76.0" text="Số lượng" />
@@ -30,25 +30,31 @@
                   <TableColumn fx:id="colThanhTien" prefWidth="195.0" text="Thành tiền" />
                </columns>
             </TableView>
-            <Label alignment="CENTER_RIGHT" layoutX="838.0" layoutY="71.0" prefHeight="24.0" prefWidth="146.0" text="Tên mặt hàng :" />
-            <TextField fx:id="fSoLuong" layoutX="998.0" layoutY="104.0" prefHeight="26.0" prefWidth="278.0" />
-            <Button layoutX="1006.0" layoutY="144.0" mnemonicParsing="false" onAction="#onThemButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-border-color: #333;" text="Thêm" textAlignment="CENTER" textFill="#2087ac">
+            <Label alignment="CENTER_RIGHT" layoutX="838.0" layoutY="72.0" prefHeight="24.0" prefWidth="146.0" text="Tên mặt hàng :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font></Label>
+            <TextField fx:id="fSoLuong" layoutX="998.0" layoutY="118.0" prefHeight="26.0" prefWidth="278.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
+            <Button layoutX="1006.0" layoutY="167.0" mnemonicParsing="false" onAction="#onThemButtonClick" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Thêm" textAlignment="CENTER">
                <font>
                   <Font name="Times New Roman Bold" size="20.0" />
                </font>
             </Button>
-            <Button layoutX="692.0" layoutY="435.0" mnemonicParsing="false" onAction="#onXuongButtonClick" prefHeight="46.0" prefWidth="80.0" style="-fx-border-color: #333;" text="Xuống" textAlignment="CENTER" textFill="#2087ac">
+            <Button layoutX="692.0" layoutY="435.0" mnemonicParsing="false" onAction="#onXuongButtonClick" prefHeight="72.0" prefWidth="96.0" styleClass="btn" stylesheets="@CSS.css" text="Xuống" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
             </Button>
             <Label layoutX="221.0" layoutY="700.0" prefHeight="36.0" prefWidth="124.0" text="Tổng Tiền :">
                <font>
-                  <Font size="24.0" />
+                  <Font name="Times New Roman Bold" size="24.0" />
                </font>
             </Label>
-      <Label alignment="CENTER_RIGHT" layoutX="838.0" layoutY="106.0" prefHeight="24.0" prefWidth="146.0" text="Số lượng :" />
-      <Button layoutX="692.0" layoutY="259.0" mnemonicParsing="false" onAction="#onLenButtonClick" prefHeight="46.0" prefWidth="80.0" style="-fx-border-color: #333;" text="Lên" textAlignment="CENTER" textFill="#2087ac">
+      <Label alignment="CENTER_RIGHT" layoutX="838.0" layoutY="126.0" prefHeight="24.0" prefWidth="146.0" text="Số lượng :">
+         <font>
+            <Font name="Times New Roman Bold" size="20.0" />
+         </font></Label>
+      <Button layoutX="692.0" layoutY="259.0" mnemonicParsing="false" onAction="#onLenButtonClick" prefHeight="72.0" prefWidth="96.0" styleClass="btn" stylesheets="@CSS.css" text="Lên" textAlignment="CENTER">
          <font>
             <Font size="10.0" />
          </font>
@@ -59,23 +65,23 @@
          </font>
       </Label>
       <Separator layoutX="672.0" layoutY="46.0" prefHeight="24.0" prefWidth="618.0" />
-      <Button layoutX="1006.0" layoutY="209.0" mnemonicParsing="false" onAction="#onXoaButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-border-color: #333;" text="Xoá" textAlignment="CENTER" textFill="#2087ac">
+      <Button layoutX="1006.0" layoutY="232.0" mnemonicParsing="false" onAction="#onXoaButtonClick" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Xoá" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Button>
-      <Button layoutX="1006.0" layoutY="686.0" mnemonicParsing="false" onAction="#onThoatButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-border-color: #333;" text="Thoát" textAlignment="CENTER" textFill="#2087ac">
+      <Button layoutX="1006.0" layoutY="686.0" mnemonicParsing="false" onAction="#onThoatButtonClick" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Thoát" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Button>
-      <ComboBox fx:id="fTenMatHang" layoutX="998.0" layoutY="70.0" prefHeight="27.0" prefWidth="278.0" />
-      <Button layoutX="1006.0" layoutY="278.0" mnemonicParsing="false" onAction="#onLuuButtonClick" prefHeight="50.0" prefWidth="268.0" style="-fx-border-color: #333;" text="Lưu" textAlignment="CENTER" textFill="#2087ac">
+      <ComboBox fx:id="fTenMatHang" layoutX="998.0" layoutY="64.0" prefHeight="27.0" prefWidth="278.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
+      <Button layoutX="1006.0" layoutY="297.0" mnemonicParsing="false" onAction="#onLuuButtonClick" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Lưu" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>
       </Button>
-      <Button layoutX="1006.0" layoutY="549.0" mnemonicParsing="false" onAction="#onThanhToanButtonClick" prefHeight="122.0" prefWidth="268.0" style="-fx-border-color: #333;" text="Thanh toán" textAlignment="CENTER" textFill="#2087ac">
+      <Button layoutX="1006.0" layoutY="549.0" mnemonicParsing="false" onAction="#onThanhToanButtonClick" prefHeight="122.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Thanh toán" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
          </font>

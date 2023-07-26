@@ -20,6 +20,18 @@ public class Room {
     public Room() {
 
     }
+
+    public Room(String roomNum, String roomTypeName, String roomPrice, int roomtypeID) {
+        this.roomNumber = roomNum;
+        this.roomTypeName = roomTypeName;
+        this.roomPrice = roomPrice;
+        this.roomTypeID = roomtypeID;
+    }
+
+    public Room(int status) {
+        this.Status = status;
+    }
+
     public String getRoomTypeName() {
         return roomTypeName;
     }

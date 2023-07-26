@@ -101,4 +101,19 @@ public class RoomCheckOut_DAO {
         }
         return checkOutID;
     }
+
+    public static int countCheckOuts() {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM RoomCheckOuts WHERE Deleted = 0";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

@@ -165,6 +165,8 @@ public class RoomBookingController implements Initializable {
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             BookingInsertController controller = loader.getController();
+            controller.setUserId(userId);
+            controller.setUserIDAndInitialize(userId);
             controller.setCustomerController(this);
             stage.setScene(scene);
             stage.setTitle("Thao Tác");

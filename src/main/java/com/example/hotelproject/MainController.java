@@ -153,7 +153,7 @@ public class MainController implements Initializable {
     private void onHangHoaButtonClick() {
         rightPane.getChildren().clear();
         try {
-            Parent qlsp = FXMLLoader.load(getClass().getResource("qlsp.fxml"));
+            Parent qlsp = FXMLLoader.load(getClass().getResource("ServiceView.fxml"));
             rightPane.getChildren().setAll(qlsp);
         } catch (IOException e) {
             e.printStackTrace();
@@ -186,8 +186,8 @@ public class MainController implements Initializable {
     private void onBaoCaoButtonClick() {
         rightPane.getChildren().clear();
         try {
-            Parent thongKeView = FXMLLoader.load(getClass().getResource("BaoCaoView.fxml"));
-            rightPane.getChildren().setAll(thongKeView);
+            Parent baocaoView = FXMLLoader.load(getClass().getResource("BaoCaoView.fxml"));
+            rightPane.getChildren().setAll(baocaoView);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -221,6 +221,16 @@ public class MainController implements Initializable {
 //            roomBookingController.setUserIDAndInitialize(userId);
 
             rightPane.getChildren().setAll(customer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void onThongKeButtonClick() {
+        rightPane.getChildren().clear();
+        try {
+            Parent statisticsView = FXMLLoader.load(getClass().getResource("StatisticsView.fxml"));
+            rightPane.getChildren().setAll(statisticsView);
         } catch (IOException e) {
             e.printStackTrace();
         }

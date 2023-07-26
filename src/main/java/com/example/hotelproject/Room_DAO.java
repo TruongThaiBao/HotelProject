@@ -224,6 +224,34 @@ public class Room_DAO {
         }
         return roomNumber;
     }
+    public static void updateRoomStatus(String roomID, int status) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        try {
+            connection = Conect.getInstance();
+            String query = "UPDATE Rooms SET Status = ? WHERE RoomID = (SELECT RoomID FROM rooms WHERE RoomNumber = ?) ";
+            statement = connection.prepareStatement(query);
+            statement.setInt(1, status);
+            statement.setString(2,roomID);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    public static int countRoomss() {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM Rooms WHERE Status = 0";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 
 }

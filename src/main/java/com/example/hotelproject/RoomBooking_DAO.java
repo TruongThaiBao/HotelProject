@@ -37,6 +37,19 @@ public class RoomBooking_DAO {
         }
         return rs;
     }
+    public static ResultSet Status(String RoomNumber) {
+        ResultSet rs;
+        try {
+            String query = "SELECT rooms.Status , rooms.RoomID" +
+                    " FROM rooms WHERE RoomID = (SELECT RoomID FROM rooms WHERE RoomNumber = ?)";
+            PreparedStatement stmt =  connection.prepareStatement(query);
+            stmt.setString(1,RoomNumber);
+            rs = stmt.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return rs;
+    }
     public static ResultSet showCus() {
         ResultSet rs;
         try {
@@ -63,7 +76,7 @@ public class RoomBooking_DAO {
         return rs;
     }
 
-    public static void insertBooking(LocalDate BookingTime, LocalDate CheckinDate, LocalDate CheckOutDate, int RoomID, int UserID, String FullName, String PhoneNumber, String IDNumber) {
+    public static void insertBooking(LocalDate BookingTime, LocalDate CheckinDate, LocalDate CheckOutDate, String RoomID, int UserID, String FullName, String PhoneNumber, String IDNumber) {
         try {
             String customerQuery = "INSERT INTO customers (FullName, PhoneNumber, IDNumber) VALUES (?, ?, ?)";
             PreparedStatement customerStmt = connection.prepareStatement(customerQuery, Statement.RETURN_GENERATED_KEYS);
@@ -71,7 +84,6 @@ public class RoomBooking_DAO {
             customerStmt.setString(2, PhoneNumber);
             customerStmt.setString(3, IDNumber);
             customerStmt.executeUpdate();
-
             ResultSet generatedKeys = customerStmt.getGeneratedKeys();
             int generatedId;
             if (generatedKeys.next()) {
@@ -79,10 +91,10 @@ public class RoomBooking_DAO {
             } else {
                 throw new SQLException("Failed to get generated key for customer");
             }
-            String bookingQuery = "INSERT INTO roombookings (CustomerID, RoomID, BookingTime, CheckInDate, CheckOutDate, UserID) VALUES (?, ?, ?, ?, ?, ?)";
+            String bookingQuery = "INSERT INTO roombookings (CustomerID,RoomID, BookingTime, CheckInDate, CheckOutDate, UserID) VALUES (?,(SELECT RoomID FROM rooms WHERE RoomNumber = ?), ?, ?, ?, ?)";
             PreparedStatement bookingStmt = connection.prepareStatement(bookingQuery);
             bookingStmt.setInt(1, generatedId);
-            bookingStmt.setInt(2, RoomID);
+            bookingStmt.setString(2,RoomID);
             bookingStmt.setDate(3, java.sql.Date.valueOf(BookingTime));
             bookingStmt.setDate(4, java.sql.Date.valueOf(CheckinDate));
             bookingStmt.setDate(5, java.sql.Date.valueOf(CheckOutDate));
@@ -106,6 +118,16 @@ public class RoomBooking_DAO {
             e.printStackTrace();
         }
     }
+    public static void updateStatus(int RoomID) {
+        try {
+            String query = "UPDATE rooms SET Status = -1 WHERE RoomID  =" +RoomID;
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.executeUpdate();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     public static void deleteBooking(int BookingID) {
         try {
             String query = "DELETE FROM roombookings WHERE BookingID = ?";
@@ -116,5 +138,18 @@ public class RoomBooking_DAO {
             e.printStackTrace();
         }
     }
-
+    public static int countBookings() {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM RoomBookings WHERE Deleted = 0";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }

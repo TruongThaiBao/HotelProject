@@ -76,11 +76,13 @@ public class RoomDetailController implements Initializable {
             this.donGia = donGia;
             this.thanhTien = thanhTien;
         }
+
         public Item(String tenMatHang, int soLuong, double donGia) {
             this.tenMatHang = tenMatHang;
             this.soLuong = soLuong;
             this.donGia = donGia;
         }
+
         public Item(String serialNumber, String tenMatHang, int soLuong, double donGia, double thanhTien) {
             this.serialNumber = serialNumber;
             this.tenMatHang = tenMatHang;
@@ -141,14 +143,17 @@ public class RoomDetailController implements Initializable {
     public void setRightPane(StackPane rightPane) {
         this.rightPane = rightPane;
     }
+
     public void setRightPaneAndInitialize(int userId) {
         this.userId = userId;
         initialize(null, null);
     }
+
     public void setUserData(String userData) {
         this.userData = userData;
     }
-//    public void setCheckInID(int checkInID) {
+
+    //    public void setCheckInID(int checkInID) {
 //        this.checkInID = checkInID;
 //    }
 //    public void setCheckInIDAndInitialize(int checkInID) {
@@ -159,15 +164,18 @@ public class RoomDetailController implements Initializable {
         this.userData = userData;
         initialize(null, null);
     }
+
     public void setTransData(int userId, int checkInID) {
         this.userId = userId;
         this.checkInID = checkInID;
     }
+
     public void setTransDataAndInitialize(int userId, int checkInID) {
         this.userId = userId;
         this.checkInID = checkInID;
         initialize(null, null);
     }
+
     private void switchToMainScreen() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Main.fxml"));
@@ -189,6 +197,7 @@ public class RoomDetailController implements Initializable {
             e.printStackTrace();
         }
     }
+
     private void showErrorMessage(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Lỗi");
@@ -222,7 +231,7 @@ public class RoomDetailController implements Initializable {
             fTenMatHang.getSelectionModel().clearSelection();
             fSoLuong.clear();
             String totalAmount = calculateTotalAmount();
-            tongTienLabel.setText(String.valueOf(totalAmount)+"   VND");
+            tongTienLabel.setText(String.valueOf(totalAmount) + "   VND");
         } catch (SQLException e) {
             System.out.println("Kết nối dữ liệu thất bại");
             e.printStackTrace();
@@ -232,6 +241,7 @@ public class RoomDetailController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
     @FXML
     private void onXoaButtonClick() {
         Item selectedItem = tableViewRoomDetail.getSelectionModel().getSelectedItem();
@@ -241,9 +251,10 @@ public class RoomDetailController implements Initializable {
     }
 
     @FXML
-    private void onThoatButtonClick(){
+    private void onThoatButtonClick() {
         switchToMainScreen();
     }
+
     @FXML
     private void onLuuButtonClick() throws SQLException {
         // Lưu thông tin từ itemList vào bảng RoomServices
@@ -266,8 +277,8 @@ public class RoomDetailController implements Initializable {
             double donGia = newItem.getDonGia();
 
             // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-            RoomService roomService = new RoomService(roomID,checkInID, serviceID, soLuong, donGia, userId);
-            System.out.println("test" +userId);
+            RoomService roomService = new RoomService(roomID, checkInID, serviceID, soLuong, donGia, userId);
+            System.out.println("test" + userId);
             RoomService_DAO.saveRoomService(roomService);
         }
 
@@ -282,7 +293,7 @@ public class RoomDetailController implements Initializable {
             double donGia = item.getDonGia();
 
             // Tạo đối tượng RoomService và lưu thông tin vào cơ sở dữ liệu
-            RoomService roomService = new RoomService(roomID,checkInID, serviceID, soLuong, donGia, userId);
+            RoomService roomService = new RoomService(roomID, checkInID, serviceID, soLuong, donGia, userId);
             RoomService_DAO.saveRoomService(roomService);
         }
 
@@ -291,7 +302,7 @@ public class RoomDetailController implements Initializable {
     }
 
 
-    public void showDataRoomDetail(){
+    public void showDataRoomDetail() {
         // Truyền số phòng
         try {
             ResultSet resultSet = Room_DAO.showRoomInformationWithRoomID(userData);
@@ -353,7 +364,7 @@ public class RoomDetailController implements Initializable {
 
                 // Hiển thị thông tin mặt hàng đã lưu
                 itemList.clear();
-                ResultSet roomServiceResultSet = RoomService_DAO.getRoomServicesByRoomIDAndCheckInID(roomID,checkInID);
+                ResultSet roomServiceResultSet = RoomService_DAO.getRoomServicesByRoomIDAndCheckInID(roomID, checkInID);
                 while (roomServiceResultSet.next()) {
                     String serviceIDD = roomServiceResultSet.getString("ServiceID");//
                     String serviceNameResultSet = Service_DAO.getTenMatHangByID(serviceIDD);
@@ -371,6 +382,7 @@ public class RoomDetailController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
     private String calculateTotalAmount() {
         double totalAmount = 0;
         for (Item item : itemList) {
@@ -382,7 +394,6 @@ public class RoomDetailController implements Initializable {
 
         return formattedTotalAmount;
     }
-
 
 
     //Button lên/xuoonsg
@@ -411,6 +422,7 @@ public class RoomDetailController implements Initializable {
             tableViewRoomDetail.getSelectionModel().select(selectedRow);
         }
     }
+
     @FXML
     private void onLenButtonClick() {
         selectPreviousRow();
@@ -495,18 +507,17 @@ public class RoomDetailController implements Initializable {
     }
 
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showDataRoomDetail();
         loadRoomData();
         String totalAmount = calculateTotalAmount();
-        tongTienLabel.setText(String.valueOf(totalAmount)+"   VND");
+        tongTienLabel.setText(String.valueOf(totalAmount) + "   VND");
 
         selectedRow = null;
         selectedIndex = -1;
 
-        System.out.println("Initialize RoomDetail \nUser " +userId+"\nCheckInID " +checkInID +"\nUserData " +userData);
+        System.out.println("Initialize RoomDetail \nUser " + userId + "\nCheckInID " + checkInID + "\nUserData " + userData);
 
     }
 }

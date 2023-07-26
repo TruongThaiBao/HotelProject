@@ -57,4 +57,33 @@ public class RoomCheckIn_DAO {
         }
         return customerID;
     }
+
+    public static int countCheckIns() {
+        int count = 0;
+        try {
+            String query = "SELECT COUNT(*) FROM RoomCheckIns WHERE Deleted = 0";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                count = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
+    public static int sumNOP() {
+        int sum = 0;
+        try {
+            String query = "SELECT COUNT(NOP) FROM RoomCheckIns WHERE Deleted = 0";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            ResultSet resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+                sum = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sum;
+    }
 }

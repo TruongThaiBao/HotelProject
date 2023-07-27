@@ -7,41 +7,41 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="302.0" prefWidth="1168.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomBookingController">
+<AnchorPane prefHeight="750.0" prefWidth="1290.0" styleClass="color-background" stylesheets="@CSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomBookingController">
       <children>
-         <TableView fx:id="tableView" prefHeight="398.0" prefWidth="1168.0">
+         <TableView fx:id="tableView" prefHeight="468.0" prefWidth="1290.0" styleClass="font-text">
             <columns>
-               <TableColumn fx:id="bookIDColumn" prefWidth="81.33333015441895" text="BOOKING ID" />
-                <TableColumn fx:id="IDc" minWidth="0.0" prefWidth="128.0" text="CUSTOMER ID" />
-               <TableColumn fx:id="nameCustomer" minWidth="0.0" prefWidth="128.0" text="TÊN KHÁCH HÀNG" />
-               <TableColumn fx:id="CustomerIDColumn" prefWidth="128.80006408691406" text="CMND / HỘ CHIẾU" />
-               <TableColumn fx:id="PhoneCustomerColumn" minWidth="0.0" prefWidth="138.39996337890625" text="SDT" />
-               <TableColumn fx:id="roomIDColumn" prefWidth="84.0" text="SỐ PHÒNG" />
-                <TableColumn fx:id="BookingTimeColumn" prefWidth="120.79998779296875" text="BOOKING TIME" />
-            <TableColumn fx:id="CheckinColumn" prefWidth="120.79998779296875" text="CHECK IN" />
-            <TableColumn fx:id="CheckOutColumn" prefWidth="112.800048828125" text="CHECK OUT" />
-            <TableColumn fx:id="UserID" prefWidth="123.199951171875" text="NHÂN VIÊN" />
+               <TableColumn fx:id="bookIDColumn" prefWidth="70.0" text="ID" />
+                <TableColumn fx:id="IDc" minWidth="0.0" prefWidth="100.0" text="Mã KH" />
+               <TableColumn fx:id="nameCustomer" minWidth="0.0" prefWidth="200.0" text="Tên khách hàng" />
+               <TableColumn fx:id="CustomerIDColumn" prefWidth="150.0" text="CMND/Hộ chiếu" />
+               <TableColumn fx:id="PhoneCustomerColumn" minWidth="150.0" prefWidth="138.39996337890625" text="SĐT" />
+               <TableColumn fx:id="roomIDColumn" prefWidth="100.0" text="Phòng" />
+                <TableColumn fx:id="BookingTimeColumn" minWidth="150.0" prefWidth="130.0" text="Ngày Booking" />
+            <TableColumn fx:id="CheckinColumn" prefWidth="130.0" text="Check in" />
+            <TableColumn fx:id="CheckOutColumn" prefWidth="130.0" text="Check out" />
+            <TableColumn fx:id="UserID" prefWidth="109.0" text="Mã NV" />
             </columns>
          </TableView>
-      <Button layoutX="1011.0" layoutY="418.0" mnemonicParsing="false" onAction="#DeleteBtn" prefHeight="34.0" prefWidth="142.0" text="XÓA" />
-      <Button layoutX="836.0" layoutY="418.0" mnemonicParsing="false" onAction="#FixButtonClicked" prefHeight="34.0" prefWidth="142.0" text="SỬA" />
-      <Button layoutX="672.0" layoutY="418.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="34.0" prefWidth="142.0" text="THÊM" />
-      <Button layoutX="513.0" layoutY="418.0" mnemonicParsing="false" onAction="#SearchButton" prefHeight="34.0" prefWidth="142.0" text="TÌM" />
-      <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="418.0" prefHeight="34.0" prefWidth="194.0" promptText="SELECT" />
-      <TextField fx:id="t_search" layoutX="220.0" layoutY="418.0" prefHeight="34.0" prefWidth="277.0" />
-      <TableView fx:id="tableView1" layoutY="469.0" prefHeight="199.0" prefWidth="1168.0">
+      <Button layoutX="1119.0" layoutY="486.0" mnemonicParsing="false" onAction="#DeleteBtn" prefHeight="50.0" prefWidth="150.0" styleClass="btn" text="XÓA" />
+      <Button layoutX="946.0" layoutY="486.0" mnemonicParsing="false" onAction="#FixButtonClicked" prefHeight="50.0" prefWidth="150.0" styleClass="btn" text="SỬA" />
+      <Button layoutX="774.0" layoutY="486.0" mnemonicParsing="false" onAction="#addButtonClicked" prefHeight="50.0" prefWidth="150.0" styleClass="btn" text="THÊM" />
+      <Button layoutX="600.0" layoutY="485.0" mnemonicParsing="false" onAction="#SearchButton" prefHeight="50.0" prefWidth="150.0" styleClass="btn" text="TÌM" />
+      <ComboBox fx:id="comboBox" layoutX="14.0" layoutY="491.0" prefHeight="39.0" prefWidth="237.0" promptText="Tìm kiếm theo" style="-fx-background-color: #ffffff;" styleClass="btn" />
+      <TextField fx:id="t_search" layoutX="287.0" layoutY="491.0" prefHeight="34.0" prefWidth="277.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
+      <TableView fx:id="tableView1" layoutY="551.0" prefHeight="199.0" prefWidth="1290.0" styleClass="font-text">
          <columns>
-            <TableColumn fx:id="bookIDColumn1" prefWidth="81.33333015441895" text="BOOKING ID" />
+            <TableColumn fx:id="bookIDColumn1" prefWidth="70.0" text="ID" />
 
-             <TableColumn fx:id="IDc1" minWidth="0.0" prefWidth="128.0" text="CUSTOMER ID" />
-            <TableColumn fx:id="nameCustomer1" minWidth="0.0" prefWidth="128.0" text="TÊN KHÁCH HÀNG" />
-            <TableColumn fx:id="CustomerIDColumn1" prefWidth="128.80006408691406" text="CMND / HỘ CHIẾU" />
-            <TableColumn fx:id="PhoneCustomerColumn1" minWidth="0.0" prefWidth="138.39996337890625" text="SDT" />
-            <TableColumn fx:id="roomIDColumn1" prefWidth="84.0" text="SỐ PHÒNG" />
-             <TableColumn fx:id="BookingTimeColumn1" prefWidth="120.79998779296875" text="BOOKING TIME" />
-            <TableColumn fx:id="CheckinColumn1" prefWidth="120.79998779296875" text="CHECK IN" />
-            <TableColumn fx:id="CheckOutColumn1" prefWidth="114.4000244140625" text="CHECK OUT" />
-            <TableColumn fx:id="UserID1" prefWidth="121.5999755859375" text="NHÂN VIÊN" />
+             <TableColumn fx:id="IDc1" minWidth="0.0" prefWidth="100.0" text="Mã KH" />
+            <TableColumn fx:id="nameCustomer1" minWidth="0.0" prefWidth="200.0" text="Tên khách hàng" />
+            <TableColumn fx:id="CustomerIDColumn1" prefWidth="150.0" text="CMND/Hộ chiếu" />
+            <TableColumn fx:id="PhoneCustomerColumn1" minWidth="150.0" prefWidth="138.39996337890625" text="SĐT" />
+            <TableColumn fx:id="roomIDColumn1" prefWidth="100.0" text="Phòng" />
+             <TableColumn fx:id="BookingTimeColumn1" minWidth="150.0" prefWidth="130.0" text="Ngày Booking" />
+            <TableColumn fx:id="CheckinColumn1" prefWidth="130.0" text="Check in" />
+            <TableColumn fx:id="CheckOutColumn1" prefWidth="130.0" text="Check out" />
+            <TableColumn fx:id="UserID1" prefWidth="109.0" text="Mã NV" />
          </columns>
       </TableView>
       </children>

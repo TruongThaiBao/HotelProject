@@ -9,34 +9,34 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="658.0" prefWidth="1168.0" stylesheets="@CSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomsController">
+<AnchorPane prefHeight="750.0" prefWidth="1290.0" styleClass="color-background" stylesheets="@CSS.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.hotelproject.RoomsController">
       <children>
-         <TableView fx:id="tableView" layoutX="3.0" layoutY="2.0" prefHeight="658.0" prefWidth="951.0">
+         <TableView fx:id="tableView" layoutX="3.0" layoutY="2.0" prefHeight="680.0" prefWidth="964.0" styleClass="font-text">
             <columns>
-               <TableColumn fx:id="roomIDColumn" prefWidth="183.19997549057007" text="MÃ PHÒNG" />
-               <TableColumn fx:id="roomNumColumn" prefWidth="145.60003662109375" text="SỐ PHÒNG" />
-               <TableColumn fx:id="roomTypeNameColumn" minWidth="0.0" prefWidth="364.0000305175781" text="TÊN PHÒNG" />
-               <TableColumn fx:id="roomPriceColumn" prefWidth="259.2000732421875" text="ĐƠN GIÁ" />
+               <TableColumn fx:id="roomIDColumn" prefWidth="183.19997549057007" text="Mã phòng" />
+               <TableColumn fx:id="roomNumColumn" prefWidth="145.60003662109375" text="Tên phòng" />
+               <TableColumn fx:id="roomTypeNameColumn" minWidth="0.0" prefWidth="364.0000305175781" text="Loại phòng" />
+               <TableColumn fx:id="roomPriceColumn" prefWidth="268.0" text="Đơn giá" />
             </columns>
          </TableView>
-         <Button fx:id="b_add" layoutX="963.0" layoutY="206.0" mnemonicParsing="false" onAction="#insertButton" prefHeight="51.0" prefWidth="188.0" text="LƯU " />
-         <Label layoutX="966.0" layoutY="96.0" prefHeight="30.0" prefWidth="90.0" text="LOẠI PHÒNG">
+         <Button fx:id="b_add" layoutX="1008.0" layoutY="264.0" mnemonicParsing="false" onAction="#insertButton" prefHeight="50.0" prefWidth="268.0" styleClass="btn" text="LƯU " />
+         <Label layoutX="1011.0" layoutY="96.0" prefHeight="30.0" prefWidth="126.0" text="Loại phòng :">
             <font>
-               <Font size="14.0" />
+               <Font name="Times New Roman" size="20.0" />
             </font>
          </Label>
-         <Button fx:id="b_update" layoutX="963.0" layoutY="311.0" mnemonicParsing="false" onAction="#updateButton" prefHeight="51.0" prefWidth="188.0" text="SỬA" />
-         <Button fx:id="b_delete" layoutX="963.0" layoutY="535.0" mnemonicParsing="false" onAction="#deleteButton" prefHeight="51.0" prefWidth="188.0" text="XÓA" />
-      <Label layoutX="966.0" layoutY="14.0" text="SỐ PHÒNG">
+         <Button fx:id="b_update" layoutX="1008.0" layoutY="200.0" mnemonicParsing="false" onAction="#updateButton" prefHeight="50.0" prefWidth="268.0" styleClass="btn" text="SỬA" />
+         <Button fx:id="b_delete" layoutX="1008.0" layoutY="688.0" mnemonicParsing="false" onAction="#deleteButton" prefHeight="50.0" prefWidth="268.0" styleClass="btn" text="XÓA" />
+      <Label layoutX="1011.0" layoutY="14.0" text="Tên phòng :">
          <font>
-            <Font size="14.0" />
+            <Font name="Times New Roman" size="20.0" />
          </font>
       </Label>
-      <TextField fx:id="t_numRoom" layoutX="963.0" layoutY="44.0" prefHeight="38.0" prefWidth="188.0" />
-      <ComboBox fx:id="c_roo" layoutX="963.0" layoutY="134.0" prefHeight="38.0" prefWidth="188.0" />
-      <Label fx:id="CountRoom" layoutX="963.0" layoutY="619.0" prefHeight="30.0" prefWidth="188.0" text="Label">
+      <TextField fx:id="t_numRoom" layoutX="1008.0" layoutY="44.0" prefHeight="38.0" prefWidth="268.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
+      <ComboBox fx:id="c_roo" layoutX="1008.0" layoutY="134.0" prefHeight="38.0" prefWidth="268.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
+      <Label fx:id="CountRoom" alignment="CENTER_RIGHT" layoutX="690.0" layoutY="698.0" prefHeight="30.0" prefWidth="264.0" styleClass="font-text" text="Label">
          <font>
-            <Font size="14.0" />
+            <Font size="20.0" />
          </font>
       </Label>
       </children></AnchorPane>

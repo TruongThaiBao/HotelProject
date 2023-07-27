@@ -56,11 +56,6 @@
             <TableColumn fx:id="colThanhTien" prefWidth="279.0" text="Thành tiền" />
          </columns>
       </TableView>
-      <Button layoutX="1008.0" layoutY="72.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Điều chỉnh số lượng" textAlignment="CENTER">
-         <font>
-            <Font name="Times New Roman Bold" size="20.0" />
-         </font>
-      </Button>
       <Button layoutX="1008.0" layoutY="681.0" mnemonicParsing="false" onAction="#onBillDaHuyButtonClick" prefHeight="50.0" prefWidth="268.0" styleClass="btn" stylesheets="@CSS.css" text="Bill đã huỷ" textAlignment="CENTER">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />

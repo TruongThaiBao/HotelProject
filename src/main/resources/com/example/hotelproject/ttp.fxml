@@ -34,9 +34,9 @@
       </Label>
       <TextField fx:id="t_numRoom" layoutX="1008.0" layoutY="44.0" prefHeight="38.0" prefWidth="268.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
       <ComboBox fx:id="c_roo" layoutX="1008.0" layoutY="134.0" prefHeight="38.0" prefWidth="268.0" style="-fx-background-color: #ffffff;" styleClass="btn" />
-      <Label fx:id="CountRoom" alignment="CENTER_RIGHT" layoutX="690.0" layoutY="698.0" prefHeight="30.0" prefWidth="264.0" styleClass="font-text" text="Label">
+      <Label fx:id="CountRoom" alignment="CENTER_RIGHT" layoutX="690.0" layoutY="698.0" prefHeight="30.0" prefWidth="264.0" text="Label">
          <font>
-            <Font size="20.0" />
+            <Font name="Times New Roman" size="20.0" />
          </font>
       </Label>
       </children></AnchorPane>

@@ -1,5 +1,7 @@
 package com.example.hotelproject;
 
+import javafx.beans.property.*;
+
 public class RoomType {
     private int roomTypeID;
     private String roomTypeName;
@@ -12,6 +14,12 @@ public class RoomType {
         this.roomTypeName = roomTypeName;
         this.basePrice = basePrice;
         this.isDeleted = isDeleted;
+    }
+
+    public RoomType(int roomtypeID, String roomTypeName, Double roomPrice) {
+        this.roomTypeID =  roomtypeID;
+        this.roomTypeName = roomTypeName;
+        this.basePrice = roomPrice;
     }
 
     public int getRoomTypeID() {
@@ -44,5 +52,15 @@ public class RoomType {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public StringProperty roomTypeNameProperty() {
+        return new SimpleStringProperty(roomTypeName);
+    }
+    public DoubleProperty roomPriceProperty() {
+        return new SimpleDoubleProperty(basePrice);
+    }
+    public IntegerProperty roomIDProperty() {
+        return new SimpleIntegerProperty(roomTypeID);
     }
 }

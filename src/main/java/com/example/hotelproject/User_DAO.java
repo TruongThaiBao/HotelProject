@@ -34,7 +34,6 @@ public class User_DAO {
         }
         return resultSet;
     }
-
     public static ResultSet getNameByUserID(int userID) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -53,4 +52,25 @@ public class User_DAO {
 
         return resultSet;
     }
+    public static void changePassword(int userID) {
+        try {
+            String query = "UPDATE Users SET Password = ? WHERE UserID = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, userID);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+//    public static String checkPassword(int userID){
+//        String password;
+//        try {
+//            String query = "SELECT Password FROM Users WHERE UserID = ?";
+//            PreparedStatement stmt = connection.prepareStatement(query);
+//            stmt.setInt(1, userID);
+//            stmt.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

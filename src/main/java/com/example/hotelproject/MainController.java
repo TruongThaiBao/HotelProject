@@ -10,12 +10,11 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -25,6 +24,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -104,8 +104,14 @@ public class MainController implements Initializable {
     private void onPhongButtonClick() {
         rightPane.getChildren().clear();
         rightPane.getChildren().add(gridPane);
+
         gridPane.setVgap(100);
-        gridPane.setHgap(200);
+        gridPane.setHgap(115);
+        double newButtonWidth = 150;
+        double newButtonHeight = 80;
+        Font timesNewRomanFont = new Font("Times New Roman", 24);
+//        Scene scene = sysTime.getScene();
+//        scene.getStylesheets().add(getClass().getResource("CSS.css").toExternalForm());
 
         try {
             int columnCount = 5;
@@ -119,6 +125,14 @@ public class MainController implements Initializable {
                 String id = resultSet.getString("RoomID");
                 int status = resultSet.getInt("Status");
                 Button button = new Button(tenPhong);
+                button.setPrefWidth(newButtonWidth);
+                button.setPrefHeight(newButtonHeight);
+                button.setFont(timesNewRomanFont);
+                // Chú ý: Trích dẫn tên của kiểu CSS bằng dấu nháy kép "roomsbookingbutton"
+                // Đảm bảo bạn đã khai báo tên "roomsbookingbutton" trong file CSS.css
+//                if (checkInID < 0) {
+//                    button.getStyleClass().add("roomsbookingbutton");
+//                }
                 button.setOnAction(event -> {
                     System.out.println("Đã nhấn vào phòng: " + tenPhong);
                     System.out.println(id);
@@ -149,6 +163,7 @@ public class MainController implements Initializable {
         }
     }
 
+
     @FXML
     private void onHangHoaButtonClick() {
         rightPane.getChildren().clear();
@@ -166,6 +181,16 @@ public class MainController implements Initializable {
         try {
             Parent qlp = FXMLLoader.load(getClass().getResource("ttp.fxml"));
             rightPane.getChildren().setAll(qlp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void onLoaiPhongButtonClick() {
+        rightPane.getChildren().clear();
+        try {
+            Parent Roomtype = FXMLLoader.load(getClass().getResource("RoomTypeView.fxml"));
+            rightPane.getChildren().setAll(Roomtype);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -236,6 +261,33 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    private void onDoiMatKhauButtonClick() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Đổi mật khẩu");
+        dialog.setHeaderText("Nhập mật khẩu cũ và mật khẩu mới:");
+
+        PasswordField oldPasswordField = new PasswordField();
+        PasswordField newPasswordField = new PasswordField();
+
+        oldPasswordField.setPromptText("Mật khẩu cũ");
+        newPasswordField.setPromptText("Mật khẩu mới");
+
+        GridPane grid = new GridPane();
+        grid.add(new Label("Mật khẩu cũ:"), 0, 0);
+        grid.add(oldPasswordField, 1, 0);
+        grid.add(new Label("Mật khẩu mới:"), 0, 1);
+        grid.add(newPasswordField, 1, 1);
+        dialog.getDialogPane().setContent(grid);
+
+        Optional<String> result = dialog.showAndWait();
+
+        // Kiểm tra kết quả khi người dùng ấn OK
+        result.ifPresent(newPassword -> {
+            String oldPassword = oldPasswordField.getText();
+
+        });
+    }
 
     @FXML
     private void onThoatButtonClick() {

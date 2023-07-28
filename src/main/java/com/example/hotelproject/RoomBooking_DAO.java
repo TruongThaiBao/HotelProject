@@ -13,7 +13,7 @@ public class RoomBooking_DAO {
         try {
             Statement stmt = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
-            String sql = "SELECT  * FROM customer ";
+            String sql = "SELECT  * FROM customer WHERE Deleted =0";
             rs = stmt.executeQuery(sql);
         }
         catch (SQLException e){
